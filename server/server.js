@@ -1,40 +1,57 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
+var mysql = require('mysql');
+
+var con = mysql.createConnection({
+  host: "localhost",
+  port: 3306,
+  user: "root",
+  password: "password",
+  database: "employeesDatabase"
+});
+
+function getEmployees(){
+    var data;
+    con.connect(function(err) {
+        if (err) throw err;
+          con.query("SELECT * FROM employees", function (err, result, fields) {
+            if (err) {
+                throw err;
+            } else{
+                //TODO Handle data
+            }
+            
+            
+          });
+      });
+      return data;
+}
 
 app.use(cors());
 app.use(express.json());
 
 app.get('/message', (req, res) => {
-    res.json({ message: "Hello from server!" });
+    res.json({ message: "Hello server!" });
 });
-
 
 
 app.listen(8000, () => {
     console.log(`Server is running on port 8000.`);
   });
 
-const users = [{
-    id: 1,
-    name: "Jane Doe",
-    age: "22",
-    },
-    {
-    id: 2,
-    name: "John Doe",
-    age: "31",
-}];
+var users = {};
 
 app.get("/employees", (req, res) => {
  try {
+    getEmployees();
     res.status(200).json({
-    users
-});
-    } catch (error) {
-        res.status(500).json({
-        message: "Failed to retrieve all users",
-    });
+        getEmployees
+    }); 
+ } catch (error) {
+    res.status(500).json({
+    message: "Failed to retrieve all users",
+ });
 }
 });
 
