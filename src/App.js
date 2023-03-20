@@ -1,6 +1,8 @@
 import './App.css';
 import React, { useState, useEffect } from "react";
 
+var employeesData;
+
 function LoginApp() {
   return (
     <div className="App">
@@ -23,7 +25,7 @@ function App() {
         </p>
       </header>
       <body class="App-body">
-      <table>
+      <table id="employeesTable">
           <tr>
             <th>Employee ID</th>
             <th>First Name</th>
@@ -34,43 +36,59 @@ function App() {
             <th>Active</th>
             <th>Age</th>
           </tr>
-          {FillEmployee()}
+          {GetEmployees()}
         </table>
-        {HiFromServer()}
       </body>
     </div>
   );
 }
 
-function HiFromServer(){
-  const [message, setMessage] = useState("");
+function GetEmployees(){
+  
+  
+  
+  fetch("http://localhost:8000/employees")
+    .then((response) => response.json())
+    .then((data) => {
 
-  useEffect(() => {
-    fetch("http://localhost:8000/message")
-      .then((res) => res.json())
-      .then((data) => setMessage(data.message));
-  }, []);
+      let employees = data;
+      let employeesTable = document.getElementById("employeesTable");
+      employeesTable.innerHTML="<table id='employeesTable'><tr><th>Employee ID</th><th>First Name</th><th>Last Name</th><th>Date of Birth</th><th>Email</th><th>Skill Level</th><th>Active</th><th>Age</th></tr></table>";
 
-  return (
-    <div className="App">
-      <h1>{message}</h1>
-    </div>
-  );
-}
+      employees.map(function(employee) {
+        let tr = document.createElement('tr');
+        let employeeID = document.createElement('td');
+        let firstName = document.createElement('td');
+        let lastName = document.createElement('td');
+        let dob = document.createElement('td');
+        let email = document.createElement('td');
+        let skillLevel = document.createElement('td');
+        let active = document.createElement('td');
+        let age = document.createElement('td');
 
-function FillEmployee() {
-  return(
-    <tr>
-      <td>100</td>
-      <td>First Name</td>
-      <td>Last Name</td>
-      <td>Date of Birtd</td>
-      <td>Email</td>
-      <td>Skill Level</td>
-      <td>Active</td>
-      <td>Age</td>
-    </tr>
-  )
+        employeeID.innerHTML = `${employee.id}`;
+        firstName.innerHTML = `${employee.first_name}`;
+        lastName.innerHTML = `${employee.last_name}`;
+        dob.innerHTML = `${employee.dob}`;
+        email.innerHTML = `${employee.email}`;
+        skillLevel.innerHTML = `${employee.skill_level}`;
+        active.innerHTML = `${employee.active}`;
+        age.innerHTML = `${employee.age}`;
+
+        tr.appendChild(employeeID);
+        tr.appendChild(firstName);
+        tr.appendChild(lastName);
+        tr.appendChild(dob);
+        tr.appendChild(email);
+        tr.appendChild(skillLevel);
+        tr.appendChild(active);
+        tr.appendChild(age);
+
+        employeesTable.appendChild(tr);
+      })
+  });
+
+
 }
 
 export default App;
