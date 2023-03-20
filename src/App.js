@@ -158,6 +158,7 @@ const checkForm = (event) => {
 function deleteEmployee(){
   let id=this.value;
   fetch('http://localhost:8000/api/Employees/'+id, { method: 'DELETE' }).then();
+  window.location.reload();
 }
 
 export default App;
