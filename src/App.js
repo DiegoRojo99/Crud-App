@@ -24,7 +24,7 @@ function App() {
         </tr>
         {GetEmployees()}
       </table>
-      <form>
+      <form onSubmit={checkForm}>
         <h3>New Employee</h3>
         <label for="first_name">First Name:</label>
         <input type="text" id="first_name" /><br/>
@@ -36,7 +36,7 @@ function App() {
         <input type="checkbox" id="active" /><br/>
         <label for="age">Age:</label>
         <input type="number" id="age" value="18" /><br/>
-        <button id="new-employee-button">Create new employee</button>
+        <button type='submit' id="new-employee-button">Create new employee</button>
        </form>
       </body>
     </div>
@@ -89,6 +89,32 @@ function GetEmployees(){
       })
   });
 
+
+}
+
+function checkForm(){
+
+  const newEmployeeData={
+    first_name:"FN",
+    last_name:"LN",
+    dob:"2022-01-01",
+    email:"fnln@gmail.com",
+    skill_level:2,
+    active:false,
+    age:1,
+  }
+  let url = "http://localhost:8000/api/Employees"
+  let fetchData = {
+    method: 'POST',
+    body: JSON.stringify(newEmployeeData),
+    headers: new Headers({
+      'Content-Type': 'application/json; charset=UTF-8'
+    })
+  }
+  
+  fetch(url, fetchData)
+    .then(function() {
+    });
 
 }
 
