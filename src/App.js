@@ -1,19 +1,5 @@
 import './App.css';
-import React, { useState, useEffect } from "react";
-
-var employeesData;
-
-function LoginApp() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          CRUD operations
-        </p>
-      </header>
-    </div>
-  );
-}
+import React from "react";
 
 //FillEmployee
 function App() {
@@ -26,26 +12,39 @@ function App() {
       </header>
       <body class="App-body">
       <table id="employeesTable">
-          <tr>
-            <th>Employee ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Date of Birth</th>
-            <th>Email</th>
-            <th>Skill Level</th>
-            <th>Active</th>
-            <th>Age</th>
-          </tr>
-          {GetEmployees()}
-        </table>
+        <tr>
+          <th>Employee ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Date of Birth</th>
+          <th>Email</th>
+          <th>Skill Level</th>
+          <th>Active</th>
+          <th>Age</th>
+        </tr>
+        {GetEmployees()}
+      </table>
+      <form>
+        <h3>New Employee</h3>
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" /><br/>
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" /><br/>
+        <label for="email">Email:</label>
+        <input type="email" id="email" /><br/>
+        <label for="active">Active:</label>
+        <input type="checkbox" id="active" /><br/>
+        <label for="age">Age:</label>
+        <input type="number" id="age" value="18" /><br/>
+        <button>Create new employee</button>
+       </form>
       </body>
     </div>
   );
 }
 
+// This function get all the employees and shows them in the page
 function GetEmployees(){
-  
-  
   
   fetch("http://localhost:8000/employees")
     .then((response) => response.json())
@@ -85,6 +84,8 @@ function GetEmployees(){
         tr.appendChild(age);
 
         employeesTable.appendChild(tr);
+        
+        return 0;
       })
   });
 
