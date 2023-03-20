@@ -1,8 +1,9 @@
 import './App.css';
-import React from "react";
+import {React} from "react";
 
 //FillEmployee
 function App() {
+
   return (
     <div className="App">
       <header className="App-header">
@@ -27,7 +28,7 @@ function App() {
       <form onSubmit={checkForm}>
         <h3>New Employee</h3>
         <label for="first_name">First Name:</label>
-        <input type="text" id="first_name" /><br/>
+        <input type="text" id="first_name"/><br/>
         <label for="last_name">Last Name:</label>
         <input type="text" id="last_name" /><br/>
         <label for="email">Email:</label>
@@ -35,7 +36,7 @@ function App() {
         <label for="active">Active:</label>
         <input type="checkbox" id="active" /><br/>
         <label for="age">Age:</label>
-        <input type="number" id="age" value="18" /><br/>
+        <input type="number" id="age"/><br/>
         <button type='submit' id="new-employee-button">Create new employee</button>
        </form>
       </body>
@@ -92,17 +93,29 @@ function GetEmployees(){
 
 }
 
-function checkForm(){
+const checkForm = (event) => {
 
   const newEmployeeData={
-    first_name:"FN",
-    last_name:"LN",
+    first_name:"",
+    last_name:"",
     dob:"2022-01-01",
-    email:"fnln@gmail.com",
-    skill_level:2,
+    email:"",
+    skill_level:0,
     active:false,
-    age:1,
+    age:0,
   }
+  
+  newEmployeeData.first_name = event.target[0].value;
+  newEmployeeData.last_name = event.target[1].value;
+  newEmployeeData.email = event.target[2].value;
+  if(event.target[3].value === true){
+    newEmployeeData.active = 1;
+  }else{
+    newEmployeeData.active = 0;
+  }
+  newEmployeeData.age = event.target[4].value;
+
+
   let url = "http://localhost:8000/api/Employees"
   let fetchData = {
     method: 'POST',
