@@ -75,3 +75,11 @@ button{
   font-size: 24px;
   margin-top: 16px;
 }
+#updateButton{
+  width: 128px;
+}
+#deleteButton{
+  background-color: red;
+  color: white;
+  width: 128px;
+}

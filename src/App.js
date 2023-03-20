@@ -1,7 +1,6 @@
 import './App.css';
 import {React} from "react";
 
-//FillEmployee
 function App() {
 
   return (
@@ -67,6 +66,8 @@ function GetEmployees(){
         let skillLevel = document.createElement('td');
         let active = document.createElement('td');
         let age = document.createElement('td');
+        let updateTD = document.createElement('td');
+        let deleteTD = document.createElement('td');
 
         employeeID.innerHTML = `${employee.id}`;
         firstName.innerHTML = `${employee.first_name}`;
@@ -92,6 +93,19 @@ function GetEmployees(){
         tr.appendChild(skillLevel);
         tr.appendChild(active);
         tr.appendChild(age);
+
+        let updateButton = document.createElement('button');
+        updateButton.id="updateButton";
+        updateButton.innerHTML="UPDATE";
+        let deleteButton = document.createElement('button');
+        deleteButton.id="deleteButton";
+        deleteButton.innerHTML="DELETE";
+        deleteButton.value= `${employee.id}`;
+        deleteButton.addEventListener('click',deleteEmployee, false);
+        updateTD.appendChild(updateButton);
+        deleteTD.appendChild(deleteButton);
+        tr.appendChild(updateTD);
+        tr.appendChild(deleteTD);
 
         employeesTable.appendChild(tr);
         
@@ -139,6 +153,11 @@ const checkForm = (event) => {
     .then(function() {
     });
 
+}
+
+function deleteEmployee(){
+  let id=this.value;
+  fetch('http://localhost:8000/api/Employees/'+id, { method: 'DELETE' }).then();
 }
 
 export default App;
