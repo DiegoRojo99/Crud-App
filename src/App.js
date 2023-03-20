@@ -75,7 +75,13 @@ function GetEmployees(){
         dob.innerHTML = d.getDate()+'-'+(d.getMonth()+1)+'-'+d.getFullYear();
         email.innerHTML = `${employee.email}`;
         skillLevel.innerHTML = `${employee.skill_level}`;
-        active.innerHTML = `${employee.active}`;
+        if(`${employee.active}`.toString()==='0'){
+          active.innerHTML = 'NO';
+        }else{
+          active.innerHTML = 'YES';
+        }
+        age.innerHTML = `${employee.age}`;
+
         age.innerHTML = `${employee.age}`;
 
         tr.appendChild(employeeID);

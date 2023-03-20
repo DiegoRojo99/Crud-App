@@ -30,8 +30,16 @@ app.post('/api/Employees', (req, res) => {
       res.send(results);
     });
   });
+  app.delete('/api/Employees/:id', function (req, res) {
+
+    var id = req.params.id;
+    console.log(id);
+    connection.query("DELETE FROM employees WHERE id=?;", id, (err, results, fields) => {
+        if(err) throw err;
+        res.send(results);
+      });
+});
 
 app.listen(8000, () => {
     console.log(`Server is running on port 8000.`);
   });
-
