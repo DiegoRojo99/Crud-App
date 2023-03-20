@@ -14,11 +14,17 @@ var connection = mysql.createConnection({
 app.use(cors());
 app.use(express.json());
 
-app.get('/message', (req, res) => {
-    res.json({ message: "Hello server!" });
-});
+app.post('/api/Employees', (req, res) => {
+    var employeeData=["Arthur","Kaluma","2003-04-21","arthurkaluma@gmail.com",2,true,19];
+    
+    connection.query("INSERT INTO employees (first_name,last_name,dob,email,skill_level,active,age) VALUE(?,?,?,?,?,?,?);",employeeData, 
+    (err, results, fields) => {
+      if(err) throw err;
+        res.send(results);
+    });
+  });
 
-app.get('/employees', (req, res) => {
+  app.get('/api/Employees', (req, res) => {
     connection.query("SELECT * FROM employees;", (err, results, fields) => {
       if(err) throw err;
       res.send(results);

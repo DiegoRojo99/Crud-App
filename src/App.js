@@ -36,7 +36,7 @@ function App() {
         <input type="checkbox" id="active" /><br/>
         <label for="age">Age:</label>
         <input type="number" id="age" value="18" /><br/>
-        <button>Create new employee</button>
+        <button id="new-employee-button">Create new employee</button>
        </form>
       </body>
     </div>
@@ -46,7 +46,7 @@ function App() {
 // This function get all the employees and shows them in the page
 function GetEmployees(){
   
-  fetch("http://localhost:8000/employees")
+  fetch("http://localhost:8000/api/Employees")
     .then((response) => response.json())
     .then((data) => {
 
