@@ -15,9 +15,9 @@ app.use(cors());
 app.use(express.json());
 
 app.post('/api/Employees', (req, res) => {
-    var employeeData=["Arthur","Kaluma","2003-04-21","arthurkaluma@gmail.com",2,true,19];
+    var dataEmployee = req.body;
     
-    connection.query("INSERT INTO employees (first_name,last_name,dob,email,skill_level,active,age) VALUE(?,?,?,?,?,?,?);",employeeData, 
+    connection.query("INSERT INTO employees SET?;",dataEmployee, 
     (err, results, fields) => {
       if(err) throw err;
         res.send(results);
