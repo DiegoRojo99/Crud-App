@@ -11,7 +11,7 @@ function App() {
           Listing Page
         </p>
       </header>
-      <body class="App-body">
+      <body className="App-body">
       <table id="employeesTable">
         <tr>
           <th>Employee ID</th>
@@ -31,6 +31,8 @@ function App() {
         <input type="text" id="first_name"/><br/>
         <label for="last_name">Last Name:</label>
         <input type="text" id="last_name" /><br/>
+        <label for="dob">Last Name:</label>
+        <input type="date" id="dob" /><br/>
         <label for="email">Email:</label>
         <input type="email" id="email" /><br/>
         <label for="active">Active:</label>
@@ -69,7 +71,8 @@ function GetEmployees(){
         employeeID.innerHTML = `${employee.id}`;
         firstName.innerHTML = `${employee.first_name}`;
         lastName.innerHTML = `${employee.last_name}`;
-        dob.innerHTML = `${employee.dob}`;
+        var d = new Date(`${employee.dob}`);
+        dob.innerHTML = d.getDate()+'-'+(d.getMonth()+1)+'-'+d.getFullYear();
         email.innerHTML = `${employee.email}`;
         skillLevel.innerHTML = `${employee.skill_level}`;
         active.innerHTML = `${employee.active}`;
@@ -107,13 +110,14 @@ const checkForm = (event) => {
   
   newEmployeeData.first_name = event.target[0].value;
   newEmployeeData.last_name = event.target[1].value;
-  newEmployeeData.email = event.target[2].value;
-  if(event.target[3].value === true){
+  newEmployeeData.dob = event.target[2].value;
+  newEmployeeData.email = event.target[3].value;
+  if(event.target[4].value === true){
     newEmployeeData.active = 1;
   }else{
     newEmployeeData.active = 0;
   }
-  newEmployeeData.age = event.target[4].value;
+  newEmployeeData.age = event.target[5].value;
 
 
   let url = "http://localhost:8000/api/Employees"
