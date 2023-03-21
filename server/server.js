@@ -33,7 +33,6 @@ app.post('/api/Employees', (req, res) => {
   app.delete('/api/Employees/:id', function (req, res) {
 
     var id = req.params.id;
-    console.log(id);
     connection.query("DELETE FROM employees WHERE id=?;", id, (err, results, fields) => {
         if(err) throw err;
         res.send(results);

@@ -158,7 +158,7 @@ const createEmployee = (event) => {
   newEmployeeData.last_name = event.target[1].value;
   newEmployeeData.dob = event.target[2].value;
   newEmployeeData.email = event.target[3].value;
-  if(event.target[4].value === true){
+  if(event.target[4].checked === true){
     newEmployeeData.active = 1;
   }else{
     newEmployeeData.active = 0;
@@ -203,7 +203,6 @@ const updateEmployee = (event) => {
   }else{
     newEmployeeData.active = false;
   }
-  console.log(event.target[4].checked);
   newEmployeeData.age = event.target[5].value;
   let id = event.target[6].value;
 
