@@ -16,11 +16,24 @@
 
 .App-header {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 100%;
   font-size: calc(10px + 2vmin);
   color: white;
+  padding-top: 32px;
 }
+
+#new-employee-header{
+  float: right;
+  width: 20%;
+  height: 100%;
+  margin: auto 16px;
+}
+#header-p{
+  width: 40%;
+  margin: 16px auto;
+  margin-left: 30%;
+}
+
 .App-body {
   background-color: #282c34;
   min-height: 100vh;
@@ -89,7 +102,8 @@ button{
 }
 #employeesTable{
   display: block;
+  margin-top: 64px;
 }
 #employeesForm{
-  display: block;
+  display: none;
 }

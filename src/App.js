@@ -6,9 +6,12 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>
+        <p id="header-p">
           Listing Page
         </p>
+        <button id="new-employee-header" onClick={showNewEmployee}>
+          New Employee
+        </button>
       </header>
       <body className="App-body">
         <table id="employeesTable">
@@ -268,6 +271,21 @@ function showEditing(evt){
   
 
   <button type='submit' id="update-employee-button">Update employee</button>
+}
+
+function showNewEmployee(){
+  
+  let employeesTable = document.getElementById("employeesTable");
+  let employeesForm = document.getElementById("employeesForm");
+  let employeesUpdate = document.getElementById("employeesUpdateDiv");
+  let newButton = document.getElementById("new-employee-header");
+  let header = document.getElementById("header-p");
+  
+  employeesTable.style.display="none";
+  employeesForm.style.display="block";
+  employeesUpdate.style.display="none";
+  newButton.style.display="none";
+  header.style.display="none";
 }
 
 export default App;
