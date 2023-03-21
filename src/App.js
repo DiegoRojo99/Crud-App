@@ -53,17 +53,17 @@ function App() {
           <form id="updateEmployeesForm" onSubmit={updateEmployee}>
             <h3>Update Employee</h3>
             <label for="first_name">First Name:</label>
-            <input type="text" name="first-name-edit" id="first_name"/><br/>
+            <input type="text" name="first-name-edit" id="first_name-edit"/><br/>
             <label for="last_name">Last Name:</label>
-            <input type="text"name="last-name-edit" id="last_name" /><br/>
+            <input type="text"name="last-name-edit" id="last_name-edit" /><br/>
             <label for="dob">Last Name:</label>
-            <input type="date" name="dob-edit" id="dob" /><br/>
+            <input type="date" name="dob-edit" id="dob-edit" /><br/>
             <label for="email">Email:</label>
-            <input type="email" name="email-edit" id="email" /><br/>
+            <input type="email" name="email-edit" id="email-edit" /><br/>
             <label for="active">Active:</label>
-            <input type="checkbox" name="active-edit" id="active" /><br/>
+            <input type="checkbox" name="active-edit" id="active-edit" /><br/>
             <label for="age">Age:</label>
-            <input type="number" name="age-edit" id="age"/><br/>
+            <input type="number" name="age-edit" id="age-edit"/><br/>
             <label for="skill">Skill:</label>
             <select id="skill-edit-select" name="skill">
             </select><br/>
@@ -73,17 +73,37 @@ function App() {
         </div>
         <div id="loginDiv">
           <h2>LOGIN PAGE</h2>
-          <form id="login-form">
-              <label>Username:</label>
-              <input type="text"></input><br/>
-              <label>Password:</label>
-              <input type='password'></input><br/>
+          <form onSubmit={makeLogin} id="login-form">
+              <label for="login-username">Username:</label>
+              <input name="login-username" type="text"></input><br/>
+              <label for="login-password">Password:</label>
+              <input name="login-password" type='password'></input><br/>
               <button type='submit'>Login</button>
             </form>
         </div>
       </body>
     </div>
   );
+}
+
+const makeLogin = (event) => {
+
+  let authData={'username':'','password':''};
+  authData.username=event.target[0].value;
+  authData.password=event.target[1].value;
+  let url = "http://localhost:8000/api/Authenticate"
+  let fetchData = {
+    method: 'POST',
+    body: JSON.stringify(authData),
+    headers: new Headers({
+      'Content-Type': 'application/json; charset=UTF-8'
+    })
+  }
+  
+  fetch(url, fetchData)
+  .then((response) => response.json())
+  .then((data) => console.log(data));
+  //RECEIVE JWT
 }
 
 // This function get all the employees and shows them in the page

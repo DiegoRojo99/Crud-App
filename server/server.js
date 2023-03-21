@@ -30,10 +30,10 @@ app.post('/api/Authenticate', (req, res) => {
 
 app.post('/api/Employees', (req, res) => {
     var dataEmployee = req.body;
-    
     connection.query("INSERT INTO employees SET?;",dataEmployee, 
     (err, results, fields) => {
       if(err) throw err;
+      //SEND JWT
         res.send(results);
     });
   });
