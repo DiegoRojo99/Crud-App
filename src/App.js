@@ -61,6 +61,9 @@ function ListingPageApp() {
             <input type="checkbox" name="active-edit" id="active" /><br/>
             <label for="age">Age:</label>
             <input type="number" name="age-edit" id="age"/><br/>
+            <label for="skill">Skill:</label>
+            <select id="skill-edit-select" name="skill">
+            </select><br/>
             <input type="hidden" name="id-edit" id="id"/><br/>
             <button type='submit' id="update-employee-button">Update employee</button>
           </form>
@@ -182,6 +185,37 @@ function GetSkills(){
 
 }
 
+function GetSkillsEdit(){
+  
+  var x = document.getElementById("skill-edit-select");
+  x.innerHTML="";
+
+  fetch("http://localhost:8000/api/Skills")
+    .then((response) => response.json())
+    .then((data) => {
+
+    let skills = data;
+    skills.map(function(skill) {
+      
+      let skillId=`${skill.skill_id}`;
+    
+      if(!skillsDataset.hasOwnProperty(skillId)){
+        skillsDataset[skillId]=`${skill.name}`;
+        var option = document.createElement("option");
+        option.text = `${skill.name}`;
+        option.value = `${skill.skill_id}`;
+        x.add(option); 
+      }
+      
+      return 0;
+    })
+    
+      
+  });
+
+
+}
+
 const createEmployee = (event) => {
 
   const newEmployeeData={
@@ -245,7 +279,8 @@ const updateEmployee = (event) => {
     newEmployeeData.active = false;
   }
   newEmployeeData.age = event.target[5].value;
-  let id = event.target[6].value;
+  newEmployeeData.skill_level = event.target[6].value;
+  let id = event.target[7].value;
 
   let url = "http://localhost:8000/api/Employees/"+id;
   let fetchData = {
@@ -308,9 +343,9 @@ function showEditing(evt){
   document.getElementsByName('dob-edit')[0].default=employeeData.dob;
   document.getElementsByName('email-edit')[0].default=employeeData.email;
   document.getElementsByName('age-edit')[0].default=employeeData.age;
-  
 
-  <button type='submit' id="update-employee-button">Update employee</button>
+  
+  GetSkillsEdit();
 }
 
 function showNewEmployee(){
