@@ -83,3 +83,13 @@ button{
   color: white;
   width: 128px;
 }
+#employeesUpdateDiv{
+  display: none;
+  width: 80%;
+}
+#employeesTable{
+  display: block;
+}
+#employeesForm{
+  display: block;
+}

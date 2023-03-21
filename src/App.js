@@ -11,35 +11,53 @@ function App() {
         </p>
       </header>
       <body className="App-body">
-      <table id="employeesTable">
-        <tr>
-          <th>Employee ID</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Date of Birth</th>
-          <th>Email</th>
-          <th>Skill Level</th>
-          <th>Active</th>
-          <th>Age</th>
-        </tr>
-        {GetEmployees()}
-      </table>
-      <form onSubmit={checkForm}>
-        <h3>New Employee</h3>
-        <label for="first_name">First Name:</label>
-        <input type="text" id="first_name"/><br/>
-        <label for="last_name">Last Name:</label>
-        <input type="text" id="last_name" /><br/>
-        <label for="dob">Last Name:</label>
-        <input type="date" id="dob" /><br/>
-        <label for="email">Email:</label>
-        <input type="email" id="email" /><br/>
-        <label for="active">Active:</label>
-        <input type="checkbox" id="active" /><br/>
-        <label for="age">Age:</label>
-        <input type="number" id="age"/><br/>
-        <button type='submit' id="new-employee-button">Create new employee</button>
-       </form>
+        <table id="employeesTable">
+          <tr>
+            <th>Employee ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Date of Birth</th>
+            <th>Email</th>
+            <th>Skill Level</th>
+            <th>Active</th>
+            <th>Age</th>
+          </tr>
+          {GetEmployees()}
+        </table>
+        <form id="employeesForm" onSubmit={createEmployee}>
+          <h3>New Employee</h3>
+          <label for="first_name">First Name:</label>
+          <input type="text" id="first_name"/><br/>
+          <label for="last_name">Last Name:</label>
+          <input type="text" id="last_name" /><br/>
+          <label for="dob">Last Name:</label>
+          <input type="date" id="dob" /><br/>
+          <label for="email">Email:</label>
+          <input type="email" id="email" /><br/>
+          <label for="active">Active:</label>
+          <input type="checkbox" id="active" /><br/>
+          <label for="age">Age:</label>
+          <input type="number" id="age"/><br/>
+          <button type='submit' id="new-employee-button">Create new employee</button>
+        </form>
+        <div id="employeesUpdateDiv">          
+          <form id="employeesForm" onSubmit={updateEmployee}>
+            <h3>Update Employee</h3>
+            <label for="first_name">First Name:</label>
+            <input type="text" name="first-name-edit" id="first_name"/><br/>
+            <label for="last_name">Last Name:</label>
+            <input type="text"name="last-name-edit" id="last_name" /><br/>
+            <label for="dob">Last Name:</label>
+            <input type="date" name="dob-edit" id="dob" /><br/>
+            <label for="email">Email:</label>
+            <input type="email" name="email-edit" id="email" /><br/>
+            <label for="active">Active:</label>
+            <input type="checkbox" name="active-edit" id="active" /><br/>
+            <label for="age">Age:</label>
+            <input type="number" name="age-edit" id="age"/><br/>
+            <button type='submit' id="update-employee-button">Update employee</button>
+          </form>
+        </div>
       </body>
     </div>
   );
@@ -97,6 +115,8 @@ function GetEmployees(){
         let updateButton = document.createElement('button');
         updateButton.id="updateButton";
         updateButton.innerHTML="UPDATE";
+        updateButton.employee = employee;
+        updateButton.addEventListener('click',showEditing, false);
         let deleteButton = document.createElement('button');
         deleteButton.id="deleteButton";
         deleteButton.innerHTML="DELETE";
@@ -116,7 +136,46 @@ function GetEmployees(){
 
 }
 
-const checkForm = (event) => {
+const createEmployee = (event) => {
+
+  const newEmployeeData={
+    first_name:"",
+    last_name:"",
+    dob:"2022-01-01",
+    email:"",
+    skill_level:0,
+    active:false,
+    age:0,
+  }
+  
+  newEmployeeData.first_name = event.target[0].value;
+  newEmployeeData.last_name = event.target[1].value;
+  newEmployeeData.dob = event.target[2].value;
+  newEmployeeData.email = event.target[3].value;
+  if(event.target[4].value === true){
+    newEmployeeData.active = 1;
+  }else{
+    newEmployeeData.active = 0;
+  }
+  newEmployeeData.age = event.target[5].value;
+
+
+  let url = "http://localhost:8000/api/Employees"
+  let fetchData = {
+    method: 'POST',
+    body: JSON.stringify(newEmployeeData),
+    headers: new Headers({
+      'Content-Type': 'application/json; charset=UTF-8'
+    })
+  }
+  
+  fetch(url, fetchData)
+    .then(function() {
+    });
+
+}
+
+const updateEmployee = (event) => {
 
   const newEmployeeData={
     first_name:"",
@@ -159,6 +218,36 @@ function deleteEmployee(){
   let id=this.value;
   fetch('http://localhost:8000/api/Employees/'+id, { method: 'DELETE' }).then();
   window.location.reload();
+}
+
+function showEditing(evt){
+  
+ let employeeData=(evt.currentTarget.employee);
+
+  let employeesTable = document.getElementById("employeesTable");
+  let employeesForm = document.getElementById("employeesForm");
+  let employeesUpdate = document.getElementById("employeesUpdateDiv");
+
+  employeesTable.style.display="none";
+  employeesForm.style.display="none";
+  employeesUpdate.style.display="block";
+  
+  document.getElementsByName('first-name-edit')[0].placeholder=employeeData.first_name;
+  document.getElementsByName('last-name-edit')[0].placeholder=employeeData.last_name;
+  document.getElementsByName('dob-edit')[0].placeholder=employeeData.dob;
+  document.getElementsByName('email-edit')[0].placeholder=employeeData.email;
+  if(employeeData.active===1){
+    document.getElementsByName('active-edit')[0].checked=true;
+  }
+  document.getElementsByName('age-edit')[0].placeholder=employeeData.age;
+  
+  document.getElementsByName('first-name-edit')[0].default=employeeData.first_name;
+  document.getElementsByName('last-name-edit')[0].default=employeeData.last_name;
+  document.getElementsByName('dob-edit')[0].default=employeeData.dob;
+  document.getElementsByName('email-edit')[0].default=employeeData.email;
+  document.getElementsByName('age-edit')[0].default=employeeData.age;
+
+  <button type='submit' id="update-employee-button">Update employee</button>
 }
 
 export default App;
