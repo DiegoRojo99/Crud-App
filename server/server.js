@@ -22,8 +22,8 @@ function generateAccessToken(username){
 }
 
 function authenticateToken(req, res, next) {
-  const authHeader = req.headers['authorization']
-  const token = authHeader && authHeader.split(' ')[1]
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split('=')[1];
 
   if (token == null) return res.sendStatus(401)
 
@@ -38,25 +38,25 @@ function authenticateToken(req, res, next) {
   })
 }
 
-app.post('/api/Authenticate', (req, res) => {
+  app.post('/api/Authenticate', (req, res) => {
 
-  let authJson=req.body;
-  let u=authJson.username;
-  let p=authJson.password;
-  let auth = [u,p];
+    let authJson=req.body;
+    let u=authJson.username;
+    let p=authJson.password;
+    let auth = [u,p];
 
-  
-  connection.query("SELECT * FROM users WHERE username=? AND password=?;",auth, 
-  (err, results, fields) => {
-    if(err) {
-      throw err;
-    }else{
-      const token = generateAccessToken({username:u});
-      res.json({token});
-    }
     
+    connection.query("SELECT * FROM users WHERE username=? AND password=?;",auth, 
+    (err, results, fields) => {
+      if(err) {
+        throw err;
+      }else{
+        const token = generateAccessToken({username:u});
+        res.json({token});
+      }
+      
+    });
   });
-});
 
   app.post('/api/Employees',authenticateToken, (req, res) => {
     var dataEmployee = req.body;

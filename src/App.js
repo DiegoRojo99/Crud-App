@@ -104,7 +104,7 @@ const makeLogin = (event) => {
   .then((response) => response.json())
   .then((data) => {
     const token=data.token;
-    localStorage.setItem("token", token);
+    document.cookie = `token=${token}`
   });
   
 }
@@ -112,7 +112,15 @@ const makeLogin = (event) => {
 // This function get all the employees and shows them in the page
 function GetEmployees(){
   
-  fetch("http://localhost:8000/api/Employees")
+  let url="http://localhost:8000/api/Employees";
+  let fetchData = {
+    method: 'GET',
+    headers: new Headers({
+      'Content-Type': 'application/json; charset=UTF-8',
+      'authorization' : document.cookie
+    })
+  }
+  fetch(url, fetchData)
     .then((response) => response.json())
     .then((data) => {
 
