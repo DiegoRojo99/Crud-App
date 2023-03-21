@@ -108,7 +108,26 @@ function GetEmployees(){
         var d = new Date(`${employee.dob}`);
         dob.innerHTML = d.getDate()+'-'+(d.getMonth()+1)+'-'+d.getFullYear();
         email.innerHTML = `${employee.email}`;
-        skillLevel.innerHTML = `${employee.skill_level}`;
+
+        
+        //HERE GETS SKILL ID AND SHOWS NAME
+
+        fetch("http://localhost:8000/api/Skills")
+        .then((response) => response.json())
+        .then((data) => {
+    
+        let skills = data;
+        skills.map(function(skill) {
+          
+          let skillId=`${skill.skill_id}`;
+          if(skillId===`${employee.skill_level}`){
+            skillLevel.innerHTML = `${skill.name}`;
+          }
+          return 0;
+        })
+      });
+
+
         if(`${employee.active}`.toString()==='0'){
           active.innerHTML = 'NO';
         }else{
