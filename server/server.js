@@ -14,6 +14,20 @@ var connection = mysql.createConnection({
 app.use(cors());
 app.use(express.json());
 
+app.post('/api/Authenticate', (req, res) => {
+
+  let authJson=req.body;
+  let u=authJson.username;
+  let p=authJson.password;
+  let auth = [u,p];
+  
+  connection.query("SELECT * FROM users WHERE username=? AND password=?;",auth, 
+  (err, results, fields) => {
+    if(err) throw err;
+      res.send(results);
+  });
+});
+
 app.post('/api/Employees', (req, res) => {
     var dataEmployee = req.body;
     

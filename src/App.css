@@ -108,3 +108,12 @@ button{
 #employeesForm{
   display: none;
 }
+#loginDiv{
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+#login-form input{
+  margin-bottom: 16px;
+  height: 32px;
+}

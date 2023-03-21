@@ -1,7 +1,7 @@
 import './App.css';
 import {React} from "react";
 
-function ListingPageApp() {
+function App() {
 
   return (
     <div className="App">
@@ -11,6 +11,9 @@ function ListingPageApp() {
         </p>
         <button id="new-employee-header" onClick={showNewEmployee}>
           New Employee
+        </button>
+        <button id="login-header" onClick={showLogin}>
+          Login
         </button>
       </header>
       <body className="App-body">
@@ -68,13 +71,19 @@ function ListingPageApp() {
             <button type='submit' id="update-employee-button">Update employee</button>
           </form>
         </div>
+        <div id="loginDiv">
+          <h2>LOGIN PAGE</h2>
+          <form id="login-form">
+              <label>Username:</label>
+              <input type="text"></input><br/>
+              <label>Password:</label>
+              <input type='password'></input><br/>
+              <button type='submit'>Login</button>
+            </form>
+        </div>
       </body>
     </div>
   );
-}
-
-function App() {
-  return ListingPageApp();
 }
 
 // This function get all the employees and shows them in the page
@@ -382,6 +391,25 @@ function showNewEmployee(){
   header.style.display="none";
   
   GetSkills();
+}
+
+function showLogin(){
+  
+  let employeesTable = document.getElementById("employeesTable");
+  let employeesForm = document.getElementById("employeesForm");
+  let employeesUpdate = document.getElementById("employeesUpdateDiv");
+  let newButton = document.getElementById("new-employee-header");
+  let loginHeader = document.getElementById("login-header");
+  let header = document.getElementById("header-p");
+  let loginDiv = document.getElementById("loginDiv");
+  
+  employeesTable.style.display="none";
+  employeesForm.style.display="none";
+  employeesUpdate.style.display="none";
+  newButton.style.display="none";
+  loginHeader.style.display="none";
+  header.style.display="none";
+  loginDiv.style.display="block";
 }
 
 export default App;
