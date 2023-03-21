@@ -102,8 +102,11 @@ const makeLogin = (event) => {
   
   fetch(url, fetchData)
   .then((response) => response.json())
-  .then((data) => console.log(data));
-  //RECEIVE JWT
+  .then((data) => {
+    const token=data.token;
+    localStorage.setItem("token", token);
+  });
+  
 }
 
 // This function get all the employees and shows them in the page
