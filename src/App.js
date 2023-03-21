@@ -41,7 +41,7 @@ function App() {
           <button type='submit' id="new-employee-button">Create new employee</button>
         </form>
         <div id="employeesUpdateDiv">          
-          <form id="employeesForm" onSubmit={updateEmployee}>
+          <form id="updateEmployeesForm" onSubmit={updateEmployee}>
             <h3>Update Employee</h3>
             <label for="first_name">First Name:</label>
             <input type="text" name="first-name-edit" id="first_name"/><br/>
@@ -55,6 +55,7 @@ function App() {
             <input type="checkbox" name="active-edit" id="active" /><br/>
             <label for="age">Age:</label>
             <input type="number" name="age-edit" id="age"/><br/>
+            <input type="hidden" name="id-edit" id="id"/><br/>
             <button type='submit' id="update-employee-button">Update employee</button>
           </form>
         </div>
@@ -70,6 +71,7 @@ function GetEmployees(){
     .then((response) => response.json())
     .then((data) => {
 
+      
       let employees = data;
       let employeesTable = document.getElementById("employeesTable");
       employeesTable.innerHTML="<table id='employeesTable'><tr><th>Employee ID</th><th>First Name</th><th>Last Name</th><th>Date of Birth</th><th>Email</th><th>Skill Level</th><th>Active</th><th>Age</th></tr></table>";
@@ -116,6 +118,7 @@ function GetEmployees(){
         updateButton.id="updateButton";
         updateButton.innerHTML="UPDATE";
         updateButton.employee = employee;
+        updateButton.value= `${employee.id}`;
         updateButton.addEventListener('click',showEditing, false);
         let deleteButton = document.createElement('button');
         deleteButton.id="deleteButton";
@@ -185,23 +188,25 @@ const updateEmployee = (event) => {
     skill_level:0,
     active:false,
     age:0,
+    id:0,
   }
   
   newEmployeeData.first_name = event.target[0].value;
   newEmployeeData.last_name = event.target[1].value;
   newEmployeeData.dob = event.target[2].value;
   newEmployeeData.email = event.target[3].value;
-  if(event.target[4].value === true){
-    newEmployeeData.active = 1;
+  if(event.target[4].checked === true){
+    newEmployeeData.active = true;
   }else{
-    newEmployeeData.active = 0;
+    newEmployeeData.active = false;
   }
+  console.log(event.target[4].checked);
   newEmployeeData.age = event.target[5].value;
+  let id = event.target[6].value;
 
-
-  let url = "http://localhost:8000/api/Employees"
+  let url = "http://localhost:8000/api/Employees/"+id;
   let fetchData = {
-    method: 'POST',
+    method: 'PUT',
     body: JSON.stringify(newEmployeeData),
     headers: new Headers({
       'Content-Type': 'application/json; charset=UTF-8'
@@ -210,7 +215,7 @@ const updateEmployee = (event) => {
   
   fetch(url, fetchData)
     .then(function() {
-    });
+    })
 
 }
 
@@ -234,18 +239,33 @@ function showEditing(evt){
   
   document.getElementsByName('first-name-edit')[0].value=employeeData.first_name;
   document.getElementsByName('last-name-edit')[0].value=employeeData.last_name;
-  document.getElementsByName('dob-edit')[0].value=employeeData.dob;
   document.getElementsByName('email-edit')[0].value=employeeData.email;
+  document.getElementsByName('age-edit')[0].value=employeeData.age;
+  document.getElementsByName('id-edit')[0].value=employeeData.id;
+  
+  var d = new Date(employeeData.dob);
+  let year=d.getFullYear();
+  let month=d.getMonth()+1;
+  if(month<10){
+    month='0'+month;
+  }
+  let day=d.getDate();
+  if(day<10){
+    day='0'+day;
+  }
+  let dobEdited =year+'-'+month+'-'+day;
+  document.getElementsByName('dob-edit')[0].value=dobEdited;
+
   if(employeeData.active===1){
     document.getElementsByName('active-edit')[0].checked=true;
   }
-  document.getElementsByName('age-edit')[0].value=employeeData.age;
-  
+
   document.getElementsByName('first-name-edit')[0].default=employeeData.first_name;
   document.getElementsByName('last-name-edit')[0].default=employeeData.last_name;
   document.getElementsByName('dob-edit')[0].default=employeeData.dob;
   document.getElementsByName('email-edit')[0].default=employeeData.email;
   document.getElementsByName('age-edit')[0].default=employeeData.age;
+  
 
   <button type='submit' id="update-employee-button">Update employee</button>
 }
