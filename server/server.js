@@ -18,7 +18,7 @@ app.use(cors());
 app.use(express.json());
 
 function generateAccessToken(username){
-  return jwt.sign(username, process.env.TOKEN_SECRET, {expiresIn:'30s'});
+  return jwt.sign(username, process.env.TOKEN_SECRET, {expiresIn:'1800s'});
 }
 
 function authenticateToken(req, res, next) {
@@ -48,20 +48,29 @@ app.post('/api/Authenticate', (req, res) => {
   
   connection.query("SELECT * FROM users WHERE username=? AND password=?;",auth, 
   (err, results, fields) => {
-    if(err) throw err;
-    
+    if(err) {
+      res.sendStatus(401);
+      throw err;
+    }else{
       const token = generateAccessToken({username:u});
       res.json({token});
-     // res.send(currentUser);
+      res.sendStatus(200);
+    }
+    
   });
 });
 
-app.post('/api/Employees', (req, res) => {
+  app.post('/api/Employees',authenticateToken, (req, res) => {
     var dataEmployee = req.body;
     connection.query("INSERT INTO employees SET?;",dataEmployee, 
     (err, results, fields) => {
-      if(err) throw err;
+      if(err) {
+        res.sendStatus(401);
+        throw err;
+      }else{
+        res.sendStatus(201);
         res.send(results);
+      }
     });
   });
 
@@ -74,21 +83,31 @@ app.post('/api/Employees', (req, res) => {
 
   app.get('/api/Employees',authenticateToken, (req, res) => {
     connection.query("SELECT * FROM employees;", (err, results, fields) => {
-      if(err) throw err;
-      res.send(results);
+      if(err) {
+        res.sendStatus(401);
+        throw err;
+      }else{
+        res.sendStatus(200);
+        res.send(results);
+      }
     });
   });
-  app.delete('/api/Employees/:id', function (req, res) {
+  app.delete('/api/Employees/:id',authenticateToken, function (req, res) {
 
     var id = req.params.id;
     connection.query("DELETE FROM employees WHERE id=?;", id, (err, results, fields) => {
-        if(err) throw err;
+      if(err) {
+        res.sendStatus(401);
+        throw err;
+      }else{
+        res.sendStatus(200);
         res.send(results);
+      }
       });
 });
 
 
-app.put('/api/Employees/:id', function (req, res) {
+app.put('/api/Employees/:id',authenticateToken, function (req, res) {
   
   var dataEmployee = req.body;
 
@@ -97,8 +116,13 @@ app.put('/api/Employees/:id', function (req, res) {
   var query3 = "email"+"="+" '"+dataEmployee.email+"', "+"skill_level"+"="+dataEmployee.skill_level+", "+"active"+"="+dataEmployee.active+", "+"age"+"="+dataEmployee.age;
   var query="UPDATE employees SET "+query2+query3+" WHERE id="+id+";";
   connection.query(query, (err, results, fields) => {
-      if(err) throw err;
+    if(err) {
+      res.sendStatus(401);
+      throw err;
+    }else{
+      res.sendStatus(200);
       res.send(results);
+    }
     });
 });
 
