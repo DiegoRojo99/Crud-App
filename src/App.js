@@ -305,7 +305,8 @@ const createEmployee = (event) => {
     method: 'POST',
     body: JSON.stringify(newEmployeeData),
     headers: new Headers({
-      'Content-Type': 'application/json; charset=UTF-8'
+      'Content-Type': 'application/json; charset=UTF-8',
+      'authorization': document.cookie
     })
   }
   
@@ -346,7 +347,8 @@ const updateEmployee = (event) => {
     method: 'PUT',
     body: JSON.stringify(newEmployeeData),
     headers: new Headers({
-      'Content-Type': 'application/json; charset=UTF-8'
+      'Content-Type': 'application/json; charset=UTF-8',
+      'authorization': document.cookie
     })
   }
   
@@ -358,7 +360,14 @@ const updateEmployee = (event) => {
 
 function deleteEmployee(){
   let id=this.value;
-  fetch('http://localhost:8000/api/Employees/'+id, { method: 'DELETE' }).then();
+  let fetchData = {
+    method: 'DELETE',
+    headers: new Headers({
+      'Content-Type': 'application/json; charset=UTF-8',
+      'authorization' : document.cookie
+    })
+  }
+  fetch('http://localhost:8000/api/Employees/'+id, fetchData).then();
   window.location.reload();
 }
 
