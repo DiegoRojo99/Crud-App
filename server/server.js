@@ -24,6 +24,13 @@ app.post('/api/Employees', (req, res) => {
     });
   });
 
+  app.get('/api/Skills', (req, res) => {
+    connection.query("SELECT * FROM skills;", (err, results, fields) => {
+      if(err) throw err;
+      res.send(results);
+    });
+  });
+
   app.get('/api/Employees', (req, res) => {
     connection.query("SELECT * FROM employees;", (err, results, fields) => {
       if(err) throw err;

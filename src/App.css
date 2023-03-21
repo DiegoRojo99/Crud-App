@@ -77,10 +77,11 @@ label {
   margin-left: -15%;
   text-align: right;
 }
- input{
-  width: 30%;
-  margin-left: 32px;
-  height: 24px;
+input, select{
+ width: 30%;
+ margin-left: 32px;
+ height: 24px;
+ font-size: 16px;
 }
 button{
   width: 30%;

@@ -1,7 +1,7 @@
 import './App.css';
 import {React} from "react";
 
-function App() {
+function ListingPageApp() {
 
   return (
     <div className="App">
@@ -41,6 +41,9 @@ function App() {
           <input type="checkbox" id="active" /><br/>
           <label for="age">Age:</label>
           <input type="number" id="age"/><br/>
+          <label for="skill">Skill:</label>
+          <select id="skill-select" name="skill">
+          </select><br/>
           <button type='submit' id="new-employee-button">Create new employee</button>
         </form>
         <div id="employeesUpdateDiv">          
@@ -65,6 +68,10 @@ function App() {
       </body>
     </div>
   );
+}
+
+function App() {
+  return ListingPageApp();
 }
 
 // This function get all the employees and shows them in the page
@@ -142,6 +149,39 @@ function GetEmployees(){
 
 }
 
+let skillsDataset={};
+
+function GetSkills(){
+  
+  var x = document.getElementById("skill-select");
+  x.innerHTML="";
+
+  fetch("http://localhost:8000/api/Skills")
+    .then((response) => response.json())
+    .then((data) => {
+
+    let skills = data;
+    skills.map(function(skill) {
+      
+      let skillId=`${skill.skill_id}`;
+    
+      if(!skillsDataset.hasOwnProperty(skillId)){
+        skillsDataset[skillId]=`${skill.name}`;
+        var option = document.createElement("option");
+        option.text = `${skill.name}`;
+        option.value = `${skill.skill_id}`;
+        x.add(option);
+      }
+      
+      return 0;
+    })
+    
+      
+  });
+
+
+}
+
 const createEmployee = (event) => {
 
   const newEmployeeData={
@@ -164,6 +204,7 @@ const createEmployee = (event) => {
     newEmployeeData.active = 0;
   }
   newEmployeeData.age = event.target[5].value;
+  newEmployeeData.skill_level = event.target[6].value;
 
 
   let url = "http://localhost:8000/api/Employees"
@@ -285,6 +326,8 @@ function showNewEmployee(){
   employeesUpdate.style.display="none";
   newButton.style.display="none";
   header.style.display="none";
+  
+  GetSkills();
 }
 
 export default App;
