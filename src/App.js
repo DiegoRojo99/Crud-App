@@ -232,14 +232,14 @@ function showEditing(evt){
   employeesForm.style.display="none";
   employeesUpdate.style.display="block";
   
-  document.getElementsByName('first-name-edit')[0].placeholder=employeeData.first_name;
-  document.getElementsByName('last-name-edit')[0].placeholder=employeeData.last_name;
-  document.getElementsByName('dob-edit')[0].placeholder=employeeData.dob;
-  document.getElementsByName('email-edit')[0].placeholder=employeeData.email;
+  document.getElementsByName('first-name-edit')[0].value=employeeData.first_name;
+  document.getElementsByName('last-name-edit')[0].value=employeeData.last_name;
+  document.getElementsByName('dob-edit')[0].value=employeeData.dob;
+  document.getElementsByName('email-edit')[0].value=employeeData.email;
   if(employeeData.active===1){
     document.getElementsByName('active-edit')[0].checked=true;
   }
-  document.getElementsByName('age-edit')[0].placeholder=employeeData.age;
+  document.getElementsByName('age-edit')[0].value=employeeData.age;
   
   document.getElementsByName('first-name-edit')[0].default=employeeData.first_name;
   document.getElementsByName('last-name-edit')[0].default=employeeData.last_name;
