@@ -20,7 +20,10 @@ function App() {
               Add New Employee
             </li>
             <li className='nav-item' id="nav-login" onClick={showLogin}>
-              Login
+              Log In
+            </li>
+            <li className='nav-item' id="nav-logout" onClick={logOut}>
+              Log Out
             </li>
             
           </ul>
@@ -94,7 +97,6 @@ function App() {
               <input name="login-password" type='password'></input><br/>
               <button type='submit'>Login</button>
             </form>
-              <button onClick={logOut} id="LogOutButton" >Log Out</button>
         </div>
       </body>
     </div>
