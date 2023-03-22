@@ -65,20 +65,21 @@ app.use(express.json());
       if(err) {
         throw err;
       }else{
+        res.body=results.insertId;
         res.send(results);
       }
     });
   });
 
   app.get('/api/Skills', (req, res) => {
-    connection.query("SELECT * FROM skills;", (err, results, fields) => {
+    connection.query("SELECT * FROM skills;", (err, results) => {
       if(err) throw err;
       res.send(results);
     });
   });
 
   app.get('/api/Employees',authenticateToken, (req, res) => {
-    connection.query("SELECT * FROM employees;", (err, results, fields) => {
+    connection.query("SELECT * FROM employees;", (err, results) => {
       if(err) {
         throw err;
       }else{
@@ -88,35 +89,34 @@ app.use(express.json());
   });
 
   app.delete('/api/Employees/:id',authenticateToken, function (req, res) {
-
     var id = req.params.id;
-    connection.query("DELETE FROM employees WHERE id=?;", id, (err, results, fields) => {
+    connection.query("DELETE FROM employees WHERE id=?;", id, (err, results) => {
       if(err) {
         throw err;
       }else{
-        res.send(results);
+        res.sendStatus(200);
       }
       });
   });
 
 
-app.put('/api/Employees/:id',authenticateToken, function (req, res) {
-  
-  var dataEmployee = req.body;
+  app.put('/api/Employees/:id',authenticateToken, function (req, res) {
+    
+    var dataEmployee = req.body;
 
-  var id = req.params.id;
-  var query2 = "first_name"+"='"+dataEmployee.first_name+"', "+"last_name"+"="+" '"+dataEmployee.last_name+"', "+"dob"+"="+" '"+dataEmployee.dob+"', ";
-  var query3 = "email"+"="+" '"+dataEmployee.email+"', "+"skill_level"+"="+dataEmployee.skill_level+", "+"active"+"="+dataEmployee.active+", "+"age"+"="+dataEmployee.age;
-  var query="UPDATE employees SET "+query2+query3+" WHERE id="+id+";";
-  connection.query(query, (err, results, fields) => {
-    if(err) {
-      throw err;
-    }else{
-      res.send(results);
-    }
-    });
-});
+    var id = req.params.id;
+    var query2 = "first_name"+"='"+dataEmployee.first_name+"', "+"last_name"+"="+" '"+dataEmployee.last_name+"', "+"dob"+"="+" '"+dataEmployee.dob+"', ";
+    var query3 = "email"+"="+" '"+dataEmployee.email+"', "+"skill_level"+"="+dataEmployee.skill_level+", "+"active"+"="+dataEmployee.active+", "+"age"+"="+dataEmployee.age;
+    var query="UPDATE employees SET "+query2+query3+" WHERE id="+id+";";
+    connection.query(query, (err, results, fields) => {
+      if(err) {
+        throw err;
+      }else{
+        res.send(req.body);
+      }
+      });
+  });
 
-app.listen(8000, () => {
+  app.listen(8000, () => {
     console.log(`Server is running on port 8000.`);
   });
