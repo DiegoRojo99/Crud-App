@@ -2,6 +2,8 @@ import './App.css';
 import {React} from "react";
 
 function App() {
+ 
+  checksLogin();
 
   return (
     <div className="App">
@@ -18,17 +20,20 @@ function App() {
       </header>
       <body className="App-body">
         <table id="employeesTable">
-          <tr>
-            <th>Employee ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Date of Birth</th>
-            <th>Email</th>
-            <th>Skill Level</th>
-            <th>Active</th>
-            <th>Age</th>
-          </tr>
-          {GetEmployees()}
+          <thead>
+            <tr>
+              <th>Employee ID</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Date of Birth</th>
+              <th>Email</th>
+              <th>Skill Level</th>
+              <th>Active</th>
+              <th>Age</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">  
+          </tbody>
         </table>
         <form id="employeesForm" onSubmit={createEmployee}>
           <h3>New Employee</h3>
@@ -86,6 +91,16 @@ function App() {
   );
 }
 
+function checksLogin(){
+  let cookieActive = document.cookie&& document.cookie.split('=')[1];
+  
+  if(cookieActive!==""){
+    GetEmployees();
+  }else{
+    window.alert("User not logged in");
+  }
+}
+
 const makeLogin = (event) => {
 
   let authData={'username':'','password':''};
@@ -105,8 +120,7 @@ const makeLogin = (event) => {
   .then((data) => {
     const token=data.token;
     document.cookie = `token=${token}`
-  });
-  
+  }); 
 }
 
 // This function get all the employees and shows them in the page
@@ -126,8 +140,8 @@ function GetEmployees(){
 
       
       let employees = data;
-      let employeesTable = document.getElementById("employeesTable");
-      employeesTable.innerHTML="<table id='employeesTable'><tr><th>Employee ID</th><th>First Name</th><th>Last Name</th><th>Date of Birth</th><th>Email</th><th>Skill Level</th><th>Active</th><th>Age</th></tr></table>";
+      let employeesTable = document.getElementById("tableBody");
+      employeesTable.innerHTML="";
 
       employees.map(function(employee) {
         let tr = document.createElement('tr');
