@@ -85,10 +85,18 @@ function App() {
               <input name="login-password" type='password'></input><br/>
               <button type='submit'>Login</button>
             </form>
+              <button onClick={logOut} id="LogOutButton" >Log Out</button>
         </div>
       </body>
     </div>
   );
+}
+
+function logOut(){
+  var date = new Date();
+  date.setTime(date.getTime());
+  document.cookie="token=''; expires="+date.toGMTString();
+  window.location.reload();
 }
 
 function checksLogin(){
@@ -391,7 +399,7 @@ function showEditing(evt){
   let employeesTable = document.getElementById("employeesTable");
   let employeesForm = document.getElementById("employeesForm");
   let employeesUpdate = document.getElementById("employeesUpdateDiv");
-    let newButton = document.getElementById("new-employee-header");
+  let newButton = document.getElementById("new-employee-header");
   let loginHeader = document.getElementById("login-header");
   let header = document.getElementById("header-p");
 

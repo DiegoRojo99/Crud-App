@@ -22,7 +22,7 @@
   padding-top: 32px;
 }
 
-#new-employee-header{
+#new-employee-header, #login-header{
   float: right;
   width: 20%;
   height: 100%;
@@ -116,4 +116,8 @@ button{
 #login-form input{
   margin-bottom: 16px;
   height: 32px;
+}
+#LogOutButton{
+  background-color: red;
+  color: white;
 }
