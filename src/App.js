@@ -153,7 +153,6 @@ const makeLogin = (event) => {
     console.log(token);
     document.cookie = `token=${token}`
   }); 
-
   
 }
 
