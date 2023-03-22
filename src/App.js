@@ -96,7 +96,7 @@ function App() {
               <label htmlFor="login-password">Password:</label>
               <input name="login-password" type='password'></input><br/>
               <button className='two-buttons' type='submit'>Login</button>
-              <button className='two-buttons'>Register</button>
+              <button onClick={register} className='two-buttons'>Register</button>
             </form>
         </div>
       </div>
@@ -130,6 +130,10 @@ function checksLogin(){
     GetEmployees();
   }else{
   }
+}
+
+const register = async function(req,res){
+
 }
 
 const makeLogin = (event) => {

@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 var mysql = require('mysql');
-
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 const jwt= require('jsonwebtoken');
 require('dotenv').config();
 
@@ -37,34 +38,17 @@ app.use(express.json());
       next()
     })
   }
-
-  app.post('/api/Authenticate', (req, res) => {
-
-    let authJson=req.body;
-    let u=authJson.username;
-    let p=authJson.password;
-    let auth = [u,p];
-    
-    connection.query("SELECT * FROM users WHERE username=? AND password=?;",auth, 
-    (err, results, fields) => {
-      if(err) {
-        throw err;
-      }else if(results.length===0){
-        //No user found
-      }else{
-        const token = generateAccessToken({username:u});
-        res.json({token});
-      }
-      
-    });
-  });
-
   
-  app.put('/api/Authenticate', (req, res) => {
+  const register = async function(req,res){
 
-    let authJson=req.body;
-    
-    connection.query("INSERT INTO users SET?;",authJson, 
+    const password = req.body.password;    
+    const encryptedPassword = await bcrypt.hash(password, saltRounds)
+    let user={       
+      username:req.body.username, 
+      password:encryptedPassword
+    }   
+
+    connection.query("INSERT INTO users SET?;",user, 
     (err, results, fields) => {
       if(err) {
         throw err;
@@ -72,6 +56,52 @@ app.use(express.json());
         res.send(results);
       }
     });
+  }
+
+  const checkEncryptedPassword = async function(req, res){
+    
+    let authJson=req.body;
+    let u=authJson.username;
+    let p=authJson.password;
+    let passwords=[];
+    
+    connection.query("SELECT * FROM users WHERE username=?;",u, 
+    async function (err, results, fields) {
+      if(err) {
+        throw err;
+      }else if(results.length===0){
+        //No user found
+      }else{
+        results.map(function(user) {
+      
+          let passwordDB=`${user.password}`;
+          passwords.push(passwordDB);          
+        })
+        for (let index = 0; index < passwords.length; index++) {
+          const password = passwords[index];
+          const comparison = await bcrypt.compare(p,password);
+          if(comparison){
+            //LLEGA HASTA AQUI
+            const token = generateAccessToken({username:u});
+            res.send(token);
+          }
+        }
+      }
+      
+    });
+
+  }
+
+  app.post('/api/Authenticate', (req, res) => {
+  
+    checkEncryptedPassword(req,res);
+  });
+
+  
+  app.put('/api/Authenticate', (req, res) => {
+    
+    register(req,res);  
+    
   });
 
   app.post('/api/Employees',authenticateToken, (req, res) => {
