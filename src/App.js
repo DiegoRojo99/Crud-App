@@ -152,6 +152,8 @@ const makeLogin = (event) => {
     console.log(token);
     document.cookie = `token=${token}`
   }); 
+
+  
 }
 
 // This function get all the employees and shows them in the page
