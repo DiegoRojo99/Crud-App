@@ -140,3 +140,6 @@ nav{
   margin: 0;
   background-color: black;
 }
+#nav-name{
+  margin-right: 64px;
+}

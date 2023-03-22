@@ -141,6 +141,7 @@ const makeLogin = (event) => {
   .then((response) => response.json())
   .then((data) => {
     const token=data.token;
+    console.log(token);
     document.cookie = `token=${token}`
   }); 
 }

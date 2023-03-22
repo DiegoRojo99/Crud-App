@@ -44,12 +44,14 @@ app.use(express.json());
     let u=authJson.username;
     let p=authJson.password;
     let auth = [u,p];
-
     
     connection.query("SELECT * FROM users WHERE username=? AND password=?;",auth, 
     (err, results, fields) => {
+      console.log(results);
       if(err) {
         throw err;
+      }else if(results.length===0){
+        //No user found
       }else{
         const token = generateAccessToken({username:u});
         res.json({token});
