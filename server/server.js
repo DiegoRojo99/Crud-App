@@ -71,6 +71,7 @@ app.use(express.json());
         throw err;
       }else if(results.length===0){
         //No user found
+        res.sendStatus(401);
       }else{
         results.map(function(user) {
       
@@ -86,7 +87,6 @@ app.use(express.json());
             res.send(token);
           }else{
             if(index+1===passwords.length){
-              res.sendStatus(401);
             }
           }
         }
