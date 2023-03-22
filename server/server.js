@@ -84,6 +84,10 @@ app.use(express.json());
             //LLEGA HASTA AQUI
             const token = generateAccessToken({username:u});
             res.send(token);
+          }else{
+            if(index+1===passwords.length){
+              res.sendStatus(401);
+            }
           }
         }
       }
