@@ -97,7 +97,6 @@ function checksLogin(){
   if(cookieActive!==""){
     GetEmployees();
   }else{
-    window.alert("User not logged in");
   }
 }
 
@@ -392,7 +391,13 @@ function showEditing(evt){
   let employeesTable = document.getElementById("employeesTable");
   let employeesForm = document.getElementById("employeesForm");
   let employeesUpdate = document.getElementById("employeesUpdateDiv");
+    let newButton = document.getElementById("new-employee-header");
+  let loginHeader = document.getElementById("login-header");
+  let header = document.getElementById("header-p");
 
+  newButton.style.display="none";
+  loginHeader.style.display="none";
+  header.style.display="none";
   employeesTable.style.display="none";
   employeesForm.style.display="none";
   employeesUpdate.style.display="block";
@@ -437,10 +442,12 @@ function showNewEmployee(){
   let employeesUpdate = document.getElementById("employeesUpdateDiv");
   let newButton = document.getElementById("new-employee-header");
   let header = document.getElementById("header-p");
+  let loginHeader = document.getElementById("login-header");
   
   employeesTable.style.display="none";
   employeesForm.style.display="block";
   employeesUpdate.style.display="none";
+  loginHeader.style.display="none";
   newButton.style.display="none";
   header.style.display="none";
   
