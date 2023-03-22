@@ -47,7 +47,6 @@ app.use(express.json());
     
     connection.query("SELECT * FROM users WHERE username=? AND password=?;",auth, 
     (err, results, fields) => {
-      console.log(results);
       if(err) {
         throw err;
       }else if(results.length===0){
@@ -57,6 +56,21 @@ app.use(express.json());
         res.json({token});
       }
       
+    });
+  });
+
+  
+  app.put('/api/Authenticate', (req, res) => {
+
+    let authJson=req.body;
+    
+    connection.query("INSERT INTO users SET?;",authJson, 
+    (err, results, fields) => {
+      if(err) {
+        throw err;
+      }else{
+        res.send(results);
+      }
     });
   });
 

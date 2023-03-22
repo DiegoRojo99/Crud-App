@@ -95,7 +95,8 @@ function App() {
               <input name="login-username" type="text"></input><br/>
               <label htmlFor="login-password">Password:</label>
               <input name="login-password" type='password'></input><br/>
-              <button type='submit'>Login</button>
+              <button className='two-buttons' type='submit'>Login</button>
+              <button className='two-buttons'>Register</button>
             </form>
         </div>
       </div>

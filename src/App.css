@@ -144,3 +144,8 @@ nav{
   margin-right: 320px;
   margin-left: 64px;
 }
+.two-buttons{
+  width: 15%;
+  display: block;
+  margin: 16px auto;
+}
