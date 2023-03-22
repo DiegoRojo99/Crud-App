@@ -10,17 +10,17 @@ function App() {
       <div className="App-header">
         <nav>
           <ul id="nav-bar">
-            <li className='nav-item' id="nav-name" >
+            <li className='nav-item' id="nav-name" onClick={home} >
               CRUD APP
+            </li>
+            <li className='nav-item' id="nav-login" onClick={showLogin}>
+              Log In
             </li>
             <li className='nav-item' id="nav-listing" onClick={listing}>
               Listing Page
             </li>
             <li className='nav-item' id="nav-new-employee" onClick={showNewEmployee}>
               Add New Employee
-            </li>
-            <li className='nav-item' id="nav-login" onClick={showLogin}>
-              Log In
             </li>
             <li className='nav-item' id="nav-logout" onClick={logOut}>
               Log Out
@@ -104,7 +104,15 @@ function App() {
 }
 
 function listing(){
-    window.location.href="http://localhost:3000/";
+  let employeesTable = document.getElementById("employeesTable");
+  let employeesForm = document.getElementById("employeesForm");
+  let employeesUpdate = document.getElementById("employeesUpdateDiv");
+  let loginDiv = document.getElementById("loginDiv");
+  
+  employeesTable.style.display="block";
+  employeesForm.style.display="none";
+  employeesUpdate.style.display="none";
+  loginDiv.style.display="none";
 }
 
 function logOut(){
@@ -479,6 +487,19 @@ function showLogin(){
   employeesForm.style.display="none";
   employeesUpdate.style.display="none";
   loginDiv.style.display="block";
+}
+
+function home(){
+  
+  let employeesTable = document.getElementById("employeesTable");
+  let employeesForm = document.getElementById("employeesForm");
+  let employeesUpdate = document.getElementById("employeesUpdateDiv");
+  let loginDiv = document.getElementById("loginDiv");
+  
+  employeesTable.style.display="none";
+  employeesForm.style.display="none";
+  employeesUpdate.style.display="none";
+  loginDiv.style.display="none";
 }
 
 export default App;
