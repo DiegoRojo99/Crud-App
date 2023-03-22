@@ -7,7 +7,7 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
+      <div className="App-header">
         <nav>
           <ul id="nav-bar">
             <li className='nav-item' id="nav-name" >
@@ -29,8 +29,8 @@ function App() {
           </ul>
 
         </nav>
-      </header>
-      <body className="App-body">
+      </div>
+      <div className="App-body">
         <table id="employeesTable">
           <thead>
             <tr>
@@ -49,19 +49,19 @@ function App() {
         </table>
         <form id="employeesForm" onSubmit={createEmployee}>
           <h3>New Employee</h3>
-          <label for="first_name">First Name:</label>
+          <label htmlFor="first_name">First Name:</label>
           <input type="text" id="first_name"/><br/>
-          <label for="last_name">Last Name:</label>
+          <label htmlFor="last_name">Last Name:</label>
           <input type="text" id="last_name" /><br/>
-          <label for="dob">Last Name:</label>
+          <label htmlFor="dob">Last Name:</label>
           <input type="date" id="dob" /><br/>
-          <label for="email">Email:</label>
+          <label htmlFor="email">Email:</label>
           <input type="email" id="email" /><br/>
-          <label for="active">Active:</label>
+          <label htmlFor="active">Active:</label>
           <input type="checkbox" id="active" /><br/>
-          <label for="age">Age:</label>
+          <label htmlFor="age">Age:</label>
           <input type="number" id="age"/><br/>
-          <label for="skill">Skill:</label>
+          <label htmlFor="skill">Skill:</label>
           <select id="skill-select" name="skill">
           </select><br/>
           <button type='submit' id="new-employee-button">Create new employee</button>
@@ -69,19 +69,19 @@ function App() {
         <div id="employeesUpdateDiv">          
           <form id="updateEmployeesForm" onSubmit={updateEmployee}>
             <h3>Update Employee</h3>
-            <label for="first_name">First Name:</label>
+            <label htmlFor="first_name">First Name:</label>
             <input type="text" name="first-name-edit" id="first_name-edit"/><br/>
-            <label for="last_name">Last Name:</label>
+            <label htmlFor="last_name">Last Name:</label>
             <input type="text"name="last-name-edit" id="last_name-edit" /><br/>
-            <label for="dob">Last Name:</label>
+            <label htmlFor="dob">Last Name:</label>
             <input type="date" name="dob-edit" id="dob-edit" /><br/>
-            <label for="email">Email:</label>
+            <label htmlFor="email">Email:</label>
             <input type="email" name="email-edit" id="email-edit" /><br/>
-            <label for="active">Active:</label>
+            <label htmlFor="active">Active:</label>
             <input type="checkbox" name="active-edit" id="active-edit" /><br/>
-            <label for="age">Age:</label>
+            <label htmlFor="age">Age:</label>
             <input type="number" name="age-edit" id="age-edit"/><br/>
-            <label for="skill">Skill:</label>
+            <label htmlFor="skill">Skill:</label>
             <select id="skill-edit-select" name="skill">
             </select><br/>
             <input type="hidden" name="id-edit" id="id"/><br/>
@@ -91,14 +91,14 @@ function App() {
         <div id="loginDiv">
           <h2>LOGIN PAGE</h2>
           <form onSubmit={makeLogin} id="login-form">
-              <label for="login-username">Username:</label>
+              <label htmlFor="login-username">Username:</label>
               <input name="login-username" type="text"></input><br/>
-              <label for="login-password">Password:</label>
+              <label htmlFor="login-password">Password:</label>
               <input name="login-password" type='password'></input><br/>
               <button type='submit'>Login</button>
             </form>
         </div>
-      </body>
+      </div>
     </div>
   );
 }
