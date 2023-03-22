@@ -8,15 +8,24 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p id="header-p">
-          Listing Page
-        </p>
-        <button id="new-employee-header" onClick={showNewEmployee}>
-          New Employee
-        </button>
-        <button id="login-header" onClick={showLogin}>
-          Login
-        </button>
+        <nav>
+          <ul id="nav-bar">
+            <li className='nav-item' id="nav-name" >
+              CRUD APP
+            </li>
+            <li className='nav-item' id="nav-listing" onClick={listing}>
+              Listing Page
+            </li>
+            <li className='nav-item' id="nav-new-employee" onClick={showNewEmployee}>
+              Add New Employee
+            </li>
+            <li className='nav-item' id="nav-login" onClick={showLogin}>
+              Login
+            </li>
+            
+          </ul>
+
+        </nav>
       </header>
       <body className="App-body">
         <table id="employeesTable">
@@ -90,6 +99,10 @@ function App() {
       </body>
     </div>
   );
+}
+
+function listing(){
+    window.location.href="http://localhost:3000/";
 }
 
 function logOut(){
@@ -399,13 +412,7 @@ function showEditing(evt){
   let employeesTable = document.getElementById("employeesTable");
   let employeesForm = document.getElementById("employeesForm");
   let employeesUpdate = document.getElementById("employeesUpdateDiv");
-  let newButton = document.getElementById("new-employee-header");
-  let loginHeader = document.getElementById("login-header");
-  let header = document.getElementById("header-p");
 
-  newButton.style.display="none";
-  loginHeader.style.display="none";
-  header.style.display="none";
   employeesTable.style.display="none";
   employeesForm.style.display="none";
   employeesUpdate.style.display="block";
@@ -448,16 +455,12 @@ function showNewEmployee(){
   let employeesTable = document.getElementById("employeesTable");
   let employeesForm = document.getElementById("employeesForm");
   let employeesUpdate = document.getElementById("employeesUpdateDiv");
-  let newButton = document.getElementById("new-employee-header");
-  let header = document.getElementById("header-p");
-  let loginHeader = document.getElementById("login-header");
+  let loginDiv = document.getElementById("loginDiv");
   
   employeesTable.style.display="none";
   employeesForm.style.display="block";
   employeesUpdate.style.display="none";
-  loginHeader.style.display="none";
-  newButton.style.display="none";
-  header.style.display="none";
+  loginDiv.style.display="none";
   
   GetSkills();
 }
@@ -467,17 +470,11 @@ function showLogin(){
   let employeesTable = document.getElementById("employeesTable");
   let employeesForm = document.getElementById("employeesForm");
   let employeesUpdate = document.getElementById("employeesUpdateDiv");
-  let newButton = document.getElementById("new-employee-header");
-  let loginHeader = document.getElementById("login-header");
-  let header = document.getElementById("header-p");
   let loginDiv = document.getElementById("loginDiv");
   
   employeesTable.style.display="none";
   employeesForm.style.display="none";
   employeesUpdate.style.display="none";
-  newButton.style.display="none";
-  loginHeader.style.display="none";
-  header.style.display="none";
   loginDiv.style.display="block";
 }
 
