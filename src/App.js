@@ -1,7 +1,7 @@
 import './App.css';
 import {React} from "react";
 
-let actualPage=1, totalPages=3;
+let actualPage=1, totalPages=1;
 
 function App() {
  
@@ -202,6 +202,7 @@ const makeLogin = (event) => {
   fetch("http://localhost:8000/api/Authenticate", requestOptions)
     .then(response => response.text())
     .then(result => {
+      document.getElementById("username-p").innerHTML=authData.username;
       document.cookie = `token=${result}`;
     })
     .catch(error => console.log('error', error));
