@@ -23,13 +23,11 @@ app.use(express.json());
   }
 
   function authenticateToken(req, res, next) {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split('=')[1];
+    const token = req.headers['authorization'];
 
     if (token == null) return res.sendStatus(401)
 
     jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-      console.log(err)
 
       if (err) return res.sendStatus(401)
 
@@ -84,6 +82,7 @@ app.use(express.json());
           const comparison = await bcrypt.compare(p,password);
           if(comparison){
             const token = generateAccessToken({username:u});
+            res.status=200;
             res.send(token);
             found=true;
           }else{
@@ -115,7 +114,7 @@ app.use(express.json());
         throw err;
       }else{
         res.body=results.insertId;
-        res.send(results);
+        res.status(201).send(results);
       }
     });
   });
@@ -127,7 +126,7 @@ app.use(express.json());
     });
   });
 
-  app.get('/api/Employees', (req, res) => {
+  app.get('/api/Employees',authenticateToken, (req, res) => {
     connection.query("SELECT * FROM employees;", (err, results) => {
       if(err) {
         throw err;
@@ -152,7 +151,6 @@ app.use(express.json());
   app.put('/api/Employees/:id',authenticateToken, function (req, res) {
     
     var dataEmployee = req.body;
-
     var id = req.params.id;
     var query2 = "first_name"+"='"+dataEmployee.first_name+"', "+"last_name"+"="+" '"+dataEmployee.last_name+"', "+"dob"+"="+" '"+dataEmployee.dob+"', ";
     var query3 = "email"+"="+" '"+dataEmployee.email+"', "+"skill_level"+"="+dataEmployee.skill_level+", "+"active"+"="+dataEmployee.active+", "+"age"+"="+dataEmployee.age;
@@ -161,7 +159,7 @@ app.use(express.json());
       if(err) {
         throw err;
       }else{
-        res.send(req.body);
+        res.status(200).send(req.body);
       }
       });
   });

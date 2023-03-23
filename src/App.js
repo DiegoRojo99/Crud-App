@@ -180,13 +180,15 @@ const makeLogin = (event) => {
 
 // This function get all the employees and shows them in the page
 function GetEmployees(){
+
+  let token =  document.cookie &&  document.cookie.split('=')[1];
   
   let url="http://localhost:8000/api/Employees";
   let fetchData = {
     method: 'GET',
     headers: new Headers({
       'Content-Type': 'application/json; charset=UTF-8',
-      'authorization' : document.cookie
+      'authorization' : token
     })
   }
   fetch(url, fetchData)
@@ -375,7 +377,7 @@ const createEmployee = (event) => {
     body: JSON.stringify(newEmployeeData),
     headers: new Headers({
       'Content-Type': 'application/json; charset=UTF-8',
-      'authorization': document.cookie
+      'authorization': (document.cookie &&  document.cookie.split('=')[1])
     })
   }
   
@@ -417,7 +419,7 @@ const updateEmployee = (event) => {
     body: JSON.stringify(newEmployeeData),
     headers: new Headers({
       'Content-Type': 'application/json; charset=UTF-8',
-      'authorization': document.cookie
+      'authorization': (document.cookie &&  document.cookie.split('=')[1])
     })
   }
   
@@ -433,7 +435,7 @@ function deleteEmployee(){
     method: 'DELETE',
     headers: new Headers({
       'Content-Type': 'application/json; charset=UTF-8',
-      'authorization' : document.cookie
+      'authorization' : document.cookie &&  document.cookie.split('=')[1]
     })
   }
   fetch('http://localhost:8000/api/Employees/'+id, fetchData).then();
