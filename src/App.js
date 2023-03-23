@@ -1,6 +1,8 @@
 import './App.css';
 import {React} from "react";
 
+let actualPage=1, totalPages=1;
+
 function App() {
  
   checksLogin();
@@ -25,6 +27,18 @@ function App() {
             </div>
           </div>
       </div>
+        <div id="header-pages">
+          <div id="page-selector">
+            <p className='page-item' id="left-selector">&lt;</p>
+            <div className='page-item' id="page-id-div">
+              <p>Page &nbsp;</p>
+              <p id="actual-page">{actualPage}</p>
+              <p>&nbsp; of &nbsp;</p>
+              <p id="total-page">{totalPages}</p>
+            </div>
+            <p className='page-item' id="right-selector">&gt;</p>
+          </div>
+        </div>
       <div className="App-body">
         <table id="employeesTable">
           <thead>
@@ -122,6 +136,7 @@ function logOut(){
   document.cookie="token=''; expires="+date.toGMTString();
   window.location.reload();
 }
+
 
 function checksLogin(){
   let cookieActive = document.cookie&& document.cookie.split('=')[1];

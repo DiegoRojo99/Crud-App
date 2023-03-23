@@ -3,17 +3,6 @@
   background-color: #282c34;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 #top-header{
   width: 100%;
   display: block;
@@ -28,7 +17,7 @@
 }
 #user-name{
   width: 100%;
-  height: 67%;
+  height: 65%;
   background-color: #012f78;
   margin: 0;
 }
@@ -43,12 +32,47 @@
   margin: 0;
   background-color: #0247b5;
 }
+#user-logout-button{
+  background-color: red;
+  color: white;
+}
 .user-button{
   margin: 0;
   width: 50%;
 }
 #table-new-employee{
   width: 100%;
+}
+#header-pages{
+  width: 100%;
+  height: 80px;
+  background-color: #01255e;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+#header-pages p{
+  margin: 0;
+  color: white;
+  font-size: 48px;
+}
+#page-selector{
+  width: 40%;
+  height: 100%;
+  float: right;
+}
+#page-selector p{
+  font-size: 48px;
+}
+.page-item{
+  height: 100%;
+  display: inline-block;
+}
+#page-id-div{
+  width: 40%;
+}
+
+#page-id-div p{
+  display: inline;
 }
 
 .App-header {
@@ -59,39 +83,18 @@
   color: white;
 }
 
-#new-employee-header, #login-header{
-  float: right;
-  width: 20%;
-  height: 100%;
-  margin: auto 16px;
-}
-#header-p{
-  width: 40%;
-  margin: 16px auto;
-  margin-left: 30%;
-}
-
 .App-body {
-  background-color: #282c34;
+  background-color: white;
+  color: black;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .App-link {
   color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 table, th, td {
@@ -119,7 +122,7 @@ th, td{
 form{
   width: 100%;
   margin: 8px;
-  color: white;
+  color: black;
   display: block;
 }
 label {
@@ -154,9 +157,16 @@ button{
   margin-top: 64px;
 }
 #loginDiv{
+  border: 5px solid black;
   display: none;
-  width: 100%;
+  width: 40%;
   height: 100%;
+  margin: 32px;
+}
+#loginDiv button{
+  width: 40%;
+  display: inline-block;
+  margin: 2.5%;
 }
 #login-form input{
   margin-bottom: 16px;
