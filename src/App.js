@@ -1,7 +1,7 @@
 import './App.css';
 import {React} from "react";
 
-let actualPage=1, totalPages=1;
+let actualPage=1, totalPages=3;
 
 function App() {
  
@@ -29,14 +29,14 @@ function App() {
       </div>
         <div id="header-pages">
           <div id="page-selector">
-            <p className='page-item' id="left-selector">&lt;</p>
+            <p onClick={previousPage} className='page-item' id="left-selector">&lt;</p>
             <div className='page-item' id="page-id-div">
               <p>Page &nbsp;</p>
               <p id="actual-page">{actualPage}</p>
               <p>&nbsp; of &nbsp;</p>
               <p id="total-page">{totalPages}</p>
             </div>
-            <p className='page-item' id="right-selector">&gt;</p>
+            <p onClick={nextPage} className='page-item' id="right-selector">&gt;</p>
           </div>
         </div>
       <div className="App-body">
@@ -116,6 +116,21 @@ function App() {
       </div>
     </div>
   );
+}
+
+function previousPage(){
+  if(actualPage>1){
+    actualPage--;
+    document.getElementById("actual-page").innerHTML=actualPage;
+    GetEmployees();
+  }
+}
+function nextPage(){
+  if(actualPage<totalPages){
+    actualPage++;
+    document.getElementById("actual-page").innerHTML=actualPage;
+    GetEmployees();
+  }
 }
 
 function listing(){
@@ -215,83 +230,92 @@ function GetEmployees(){
       let employeesTable = document.getElementById("tableBody");
       employeesTable.innerHTML="";
 
+      let numberEmployee=0;
+      let numberEmployeesInPage=0;
       employees.map(function(employee) {
-        let tr = document.createElement('tr');
-        let employeeID = document.createElement('td');
-        let firstName = document.createElement('td');
-        let lastName = document.createElement('td');
-        let dob = document.createElement('td');
-        let email = document.createElement('td');
-        let skillLevel = document.createElement('td');
-        let active = document.createElement('td');
-        let age = document.createElement('td');
-        let updateTD = document.createElement('td');
-        let deleteTD = document.createElement('td');
-
-        employeeID.innerHTML = `${employee.id}`;
-        firstName.innerHTML = `${employee.first_name}`;
-        lastName.innerHTML = `${employee.last_name}`;
-        var d = new Date(`${employee.dob}`);
-        dob.innerHTML = d.getDate()+'-'+(d.getMonth()+1)+'-'+d.getFullYear();
-        email.innerHTML = `${employee.email}`;
-
         
-        //HERE GETS SKILL ID AND SHOWS NAME
-
-        fetch("http://localhost:8000/api/Skills")
-        .then((response) => response.json())
-        .then((data) => {
-    
-        let skills = data;
-        skills.map(function(skill) {
+        if(numberEmployee+1>((actualPage-1)*5)&&numberEmployee<(actualPage*5)&&numberEmployeesInPage<5){
+          let tr = document.createElement('tr');
+          let employeeID = document.createElement('td');
+          let firstName = document.createElement('td');
+          let lastName = document.createElement('td');
+          let dob = document.createElement('td');
+          let email = document.createElement('td');
+          let skillLevel = document.createElement('td');
+          let active = document.createElement('td');
+          let age = document.createElement('td');
+          let updateTD = document.createElement('td');
+          let deleteTD = document.createElement('td');
+  
+          employeeID.innerHTML = `${employee.id}`;
+          firstName.innerHTML = `${employee.first_name}`;
+          lastName.innerHTML = `${employee.last_name}`;
+          var d = new Date(`${employee.dob}`);
+          dob.innerHTML = d.getDate()+'-'+(d.getMonth()+1)+'-'+d.getFullYear();
+          email.innerHTML = `${employee.email}`;
+  
           
-          let skillId=`${skill.skill_id}`;
-          if(skillId===`${employee.skill_level}`){
-            skillLevel.innerHTML = `${skill.name}`;
+          //HERE GETS SKILL ID AND SHOWS NAME
+  
+          fetch("http://localhost:8000/api/Skills")
+          .then((response) => response.json())
+          .then((data) => {
+      
+          let skills = data;
+          skills.map(function(skill) {
+            
+            let skillId=`${skill.skill_id}`;
+            if(skillId===`${employee.skill_level}`){
+              skillLevel.innerHTML = `${skill.name}`;
+            }
+            return 0;
+          })
+        });
+  
+  
+          if(`${employee.active}`.toString()==='0'){
+            active.innerHTML = 'NO';
+          }else{
+            active.innerHTML = 'YES';
           }
-          return 0;
-        })
-      });
-
-
-        if(`${employee.active}`.toString()==='0'){
-          active.innerHTML = 'NO';
-        }else{
-          active.innerHTML = 'YES';
+          age.innerHTML = `${employee.age}`;
+  
+          age.innerHTML = `${employee.age}`;
+  
+          tr.appendChild(employeeID);
+          tr.appendChild(firstName);
+          tr.appendChild(lastName);
+          tr.appendChild(dob);
+          tr.appendChild(email);
+          tr.appendChild(skillLevel);
+          tr.appendChild(active);
+          tr.appendChild(age);
+  
+          let updateButton = document.createElement('button');
+          updateButton.id="updateButton";
+          updateButton.innerHTML="UPDATE";
+          updateButton.employee = employee;
+          updateButton.value= `${employee.id}`;
+          updateButton.addEventListener('click',showEditing, false);
+          let deleteButton = document.createElement('button');
+          deleteButton.id="deleteButton";
+          deleteButton.innerHTML="DELETE";
+          deleteButton.value= `${employee.id}`;
+          deleteButton.addEventListener('click',deleteEmployee, false);
+          updateTD.appendChild(updateButton);
+          deleteTD.appendChild(deleteButton);
+          tr.appendChild(updateTD);
+          tr.appendChild(deleteTD);
+  
+          employeesTable.appendChild(tr);
+          numberEmployeesInPage++;
+          
         }
-        age.innerHTML = `${employee.age}`;
-
-        age.innerHTML = `${employee.age}`;
-
-        tr.appendChild(employeeID);
-        tr.appendChild(firstName);
-        tr.appendChild(lastName);
-        tr.appendChild(dob);
-        tr.appendChild(email);
-        tr.appendChild(skillLevel);
-        tr.appendChild(active);
-        tr.appendChild(age);
-
-        let updateButton = document.createElement('button');
-        updateButton.id="updateButton";
-        updateButton.innerHTML="UPDATE";
-        updateButton.employee = employee;
-        updateButton.value= `${employee.id}`;
-        updateButton.addEventListener('click',showEditing, false);
-        let deleteButton = document.createElement('button');
-        deleteButton.id="deleteButton";
-        deleteButton.innerHTML="DELETE";
-        deleteButton.value= `${employee.id}`;
-        deleteButton.addEventListener('click',deleteEmployee, false);
-        updateTD.appendChild(updateButton);
-        deleteTD.appendChild(deleteButton);
-        tr.appendChild(updateTD);
-        tr.appendChild(deleteTD);
-
-        employeesTable.appendChild(tr);
-        
-        return 0;
+        numberEmployee++;
+          return 0;
       })
+      totalPages=Math.floor(numberEmployee/5)+1;
+      document.getElementById("total-page").innerHTML=totalPages;
   });
 
 
