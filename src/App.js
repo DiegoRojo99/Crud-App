@@ -8,27 +8,22 @@ function App() {
   return (
     <div className="App">
       <div className="App-header">
-        <nav>
-          <ul id="nav-bar">
-            <li className='nav-item' id="nav-name" onClick={home} >
-              CRUD APP
-            </li>
-            <li className='nav-item' id="nav-login" onClick={showLogin}>
-              Log In
-            </li>
-            <li className='nav-item' id="nav-listing" onClick={listing}>
-              Listing Page
-            </li>
-            <li className='nav-item' id="nav-new-employee" onClick={showNewEmployee}>
-              Add New Employee
-            </li>
-            <li className='nav-item' id="nav-logout" onClick={logOut}>
-              Log Out
-            </li>
-            
-          </ul>
-
-        </nav>
+          <div id="app-name">
+            <h2 onClick={listing}>CRUD APP</h2>
+          </div>
+          <div id="user-header">
+            <div id="user-name">
+              <p id="username-p">Username</p>
+            </div>
+            <div id="user-buttons">
+              <button className="user-button" onClick={showLogin} id="user-login-button">
+                Log In
+              </button>
+              <button className="user-button" onClick={logOut} id="user-logout-button">
+                Log Out
+              </button>
+            </div>
+          </div>
       </div>
       <div className="App-body">
         <table id="employeesTable">
@@ -42,6 +37,11 @@ function App() {
               <th>Skill Level</th>
               <th>Active</th>
               <th>Age</th>
+              <th colSpan="2">
+                <button onClick={showNewEmployee} id="table-new-employee">
+                  New Employee
+                </button>
+              </th>
             </tr>
           </thead>
           <tbody id="tableBody">  
@@ -513,19 +513,6 @@ function showLogin(){
   employeesForm.style.display="none";
   employeesUpdate.style.display="none";
   loginDiv.style.display="block";
-}
-
-function home(){
-  
-  let employeesTable = document.getElementById("employeesTable");
-  let employeesForm = document.getElementById("employeesForm");
-  let employeesUpdate = document.getElementById("employeesUpdateDiv");
-  let loginDiv = document.getElementById("loginDiv");
-  
-  employeesTable.style.display="none";
-  employeesForm.style.display="none";
-  employeesUpdate.style.display="none";
-  loginDiv.style.display="none";
 }
 
 export default App;
