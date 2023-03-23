@@ -104,9 +104,7 @@ app.use(express.json());
 
   
   app.put('/api/Authenticate', (req, res) => {
-    
     register(req,res);  
-    
   });
 
   app.post('/api/Employees',authenticateToken, (req, res) => {

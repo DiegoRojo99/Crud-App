@@ -92,9 +92,9 @@ function App() {
           <h2>LOGIN PAGE</h2>
           <form onSubmit={makeLogin} id="login-form">
               <label htmlFor="login-username">Username:</label>
-              <input name="login-username" type="text"></input><br/>
+              <input id="register-username" name="login-username" type="text"></input><br/>
               <label htmlFor="login-password">Password:</label>
-              <input name="login-password" type='password'></input><br/>
+              <input id="register-password" name="login-password" type='password'></input><br/>
               <button className='two-buttons' type='submit'>Login</button>
               <button onClick={register} className='two-buttons'>Register</button>
             </form>
@@ -132,22 +132,26 @@ function checksLogin(){
   }
 }
 
-const register = async function(req,res){
-  let user = {"username": "r","password":"r"};
-  
-  let url = "http://localhost:8000/api/Authenticate"
-  let fetchData = {
-    method: 'POST',
-    body: JSON.stringify(user),
-    headers: new Headers({
-      'Content-Type': 'application/json; charset=UTF-8'
-    })
+function register(){
+  let authData={username:"",password:""};
+  authData.username=document.getElementById("register-username").value;
+  authData.password=document.getElementById("register-password").value;
+
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
+  var raw = JSON.stringify(authData);
+
+  var requestOptions = {
+    method: 'PUT',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+  };
+
+  fetch("http://localhost:8000/api/Authenticate", requestOptions)
+    .catch(error => console.log('error', error));    
   }
-  
-  fetch(url, fetchData)
-    .then(function() {
-    });
-}
 
 const makeLogin = (event) => {
   let authData={username:"",password:""};
@@ -168,7 +172,6 @@ const makeLogin = (event) => {
   fetch("http://localhost:8000/api/Authenticate", requestOptions)
     .then(response => response.text())
     .then(result => {
-      console.log(result);
       document.cookie = `token=${result}`;
     })
     .catch(error => console.log('error', error));
