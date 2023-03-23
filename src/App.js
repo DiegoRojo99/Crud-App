@@ -133,30 +133,45 @@ function checksLogin(){
 }
 
 const register = async function(req,res){
-
-}
-
-const makeLogin = (event) => {
-
-  let authData={'username':'','password':''};
-  authData.username=event.target[0].value;
-  authData.password=event.target[1].value;
+  let user = {"username": "r","password":"r"};
+  
   let url = "http://localhost:8000/api/Authenticate"
   let fetchData = {
     method: 'POST',
-    body: JSON.stringify(authData),
+    body: JSON.stringify(user),
     headers: new Headers({
       'Content-Type': 'application/json; charset=UTF-8'
     })
   }
   
   fetch(url, fetchData)
-  .then((response) => response.json())
-  .then((data) => {
-    const token=data.token;
-    console.log(token);
-    document.cookie = `token=${token}`
-  }); 
+    .then(function() {
+    });
+}
+
+const makeLogin = (event) => {
+  let authData={username:"",password:""};
+  authData.username=event.target[0].value;
+  authData.password=event.target[1].value;
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  
+  var raw = JSON.stringify(authData);
+  
+  var requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+  };
+  
+  fetch("http://localhost:8000/api/Authenticate", requestOptions)
+    .then(response => response.text())
+    .then(result => {
+      console.log(result);
+      document.cookie = `token=${result}`;
+    })
+    .catch(error => console.log('error', error));
   
 }
 

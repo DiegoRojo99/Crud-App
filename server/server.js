@@ -3,7 +3,7 @@ const cors = require('cors');
 const app = express();
 var mysql = require('mysql');
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
+const saltRounds = 1;
 const jwt= require('jsonwebtoken');
 require('dotenv').config();
 
@@ -64,6 +64,7 @@ app.use(express.json());
     let u=authJson.username;
     let p=authJson.password;
     let passwords=[];
+    let found=false;
     
     connection.query("SELECT * FROM users WHERE username=?;",u, 
     async function (err, results, fields) {
@@ -82,11 +83,12 @@ app.use(express.json());
           const password = passwords[index];
           const comparison = await bcrypt.compare(p,password);
           if(comparison){
-            //LLEGA HASTA AQUI
             const token = generateAccessToken({username:u});
             res.send(token);
+            found=true;
           }else{
-            if(index+1===passwords.length){
+            if(index+1===passwords.length && !found){
+              res.sendStatus(401);
             }
           }
         }
@@ -97,7 +99,6 @@ app.use(express.json());
   }
 
   app.post('/api/Authenticate', (req, res) => {
-  
     checkEncryptedPassword(req,res);
   });
 
@@ -128,7 +129,7 @@ app.use(express.json());
     });
   });
 
-  app.get('/api/Employees',authenticateToken, (req, res) => {
+  app.get('/api/Employees', (req, res) => {
     connection.query("SELECT * FROM employees;", (err, results) => {
       if(err) {
         throw err;
