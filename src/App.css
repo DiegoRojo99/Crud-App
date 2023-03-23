@@ -101,7 +101,7 @@ button{
   width: 80%;
 }
 #employeesTable{
-  display: none;
+  display: block;
   margin-top: 64px;
 }
 #employeesForm{
