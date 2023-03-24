@@ -16,13 +16,13 @@ function App() {
           <div id="user-header">
             <div id="user-buttons">
               <button className="user-button" onClick={showLogin} id="user-login-button">
-              <svg fill="currentColor" viewBox="0 0 16 16" height="1em" width="1em">
+              <svg fill="currentColor" viewBox="0 0 16 16" height="2em" width="2em">
                 <path d="M11 6a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path fillRule="evenodd"  d="M0 8a8 8 0 1116 0A8 8 0 010 8zm8-7a7 7 0 00-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 008 1z"/>
               </svg>
               </button>
               <button className="user-button" onClick={logOut} id="user-logout-button">
-              <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} viewBox="0 0 24 24" height="1em" width="1em">
+              <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} viewBox="0 0 24 24" height="2em" width="2em">
                 <path stroke="none" d="M0 0h24v24H0z" />
                 <path d="M13 12v.01M3 21h18M5 21V5a2 2 0 012-2h7.5M17 13.5V21M14 7h7m-3-3l3 3-3 3" />
               </svg>
@@ -45,7 +45,10 @@ function App() {
                 <th>Age</th>
                 <th colSpan="2">
                   <button onClick={showNewEmployee} id="table-new-employee">
-                    New Employee
+                  <svg fill="currentColor" viewBox="0 0 16 16" height="2em" width="2em" >
+                    <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 100-6 3 3 0 000 6z" />
+                    <path fillRule="evenodd" d="M13.5 5a.5.5 0 01.5.5V7h1.5a.5.5 0 010 1H14v1.5a.5.5 0 01-1 0V8h-1.5a.5.5 0 010-1H13V5.5a.5.5 0 01.5-.5z"/>
+                  </svg>
                   </button>
                 </th>
               </tr>
@@ -340,6 +343,7 @@ function GetSkills(){
     .then((data) => {
 
     let skills = data;
+    skillsDataset=[];
     skills.map(function(skill) {
       
       let skillId=`${skill.skill_id}`;
@@ -361,7 +365,7 @@ function GetSkills(){
 
 }
 
-function GetSkillsEdit(){
+function GetSkillsEdit(skill_level){
   
   var x = document.getElementById("skill-edit-select");
   x.innerHTML="";
@@ -371,15 +375,19 @@ function GetSkillsEdit(){
     .then((data) => {
 
     let skills = data;
+    skillsDataset=[];
     skills.map(function(skill) {
       
-      let skillId=`${skill.skill_id}`;
+      let skillId=parseInt(`${skill.skill_id}`, 10)
     
       if(!skillsDataset.hasOwnProperty(skillId)){
         skillsDataset[skillId]=`${skill.name}`;
         var option = document.createElement("option");
         option.text = `${skill.name}`;
         option.value = `${skill.skill_id}`;
+        if(skill_level===skillId){
+          option.selected="selected";
+        }
         x.add(option); 
       }
       
@@ -530,7 +538,7 @@ function showEditing(evt){
   document.getElementsByName('age-edit')[0].default=employeeData.age;
 
   
-  GetSkillsEdit();
+  GetSkillsEdit(employeeData.skill_level);
 }
 
 function showNewEmployee(){
