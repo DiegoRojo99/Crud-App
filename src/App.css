@@ -3,12 +3,17 @@
   background-color: #282c34;
 }
 
-#top-header{
-  width: 100%;
-  display: block;
-}
 #app-name{
   width: 80%;
+  text-align: start;
+}
+#home:hover{
+cursor: pointer;
+}
+#app-name h2{  
+  display: inline-block;
+  margin-left: 5%;
+  margin-right: 5%;
 }
 #user-header{
   width: 20%;
@@ -38,12 +43,12 @@
 }
 .user-button{
   margin: 0;
-  height: 60%;
-  width: 30%;
+  height: 5rem;
+  width: 5rem;
   margin: 5%;
 }
 #table-new-employee{
-  width: 40%;
+  width: 5rem;
   height: 40%;
   border-radius: 120px !important;
 }
@@ -217,6 +222,6 @@ li{
 button:hover{
   cursor: pointer;
 }
-#app-name h2:hover{
-  cursor: pointer;
+#h2-name{
+  margin-left: 40% !important;
 }
