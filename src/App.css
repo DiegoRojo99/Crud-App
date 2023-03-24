@@ -28,7 +28,7 @@
 }
 #user-buttons{
   width: 100%;
-  height: 30%;
+  height: 100%;
   margin: 0;
   background-color: #0247b5;
 }
@@ -38,7 +38,8 @@
 }
 .user-button{
   margin: 0;
-  width: 50%;
+  height: 50%;
+  width: 100%;
 }
 #table-new-employee{
   width: 100%;
@@ -127,7 +128,7 @@ button{
 }
 #employeesTable{
   display: block;
-  margin-top: 64px;
+  margin-top: 32px;
 }
 #loginDiv{
   border: 5px solid black;
@@ -200,7 +201,7 @@ li{
   font-size: 40px;
 }
 #paginator-middle{
-  width: 59.3%;
+  width: 59%;
   height: 156px;
   border: white solid 2px;
   float: left;

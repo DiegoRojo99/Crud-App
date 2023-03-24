@@ -14,15 +14,18 @@ function App() {
             <h2 onClick={listing}>CRUD APP</h2>
           </div>
           <div id="user-header">
-            <div id="user-name">
-              <p id="username-p"></p>
-            </div>
             <div id="user-buttons">
               <button className="user-button" onClick={showLogin} id="user-login-button">
-                Log In
+              <svg fill="currentColor" viewBox="0 0 16 16" height="1em" width="1em">
+                <path d="M11 6a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path fillRule="evenodd"  d="M0 8a8 8 0 1116 0A8 8 0 010 8zm8-7a7 7 0 00-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 008 1z"/>
+              </svg>
               </button>
               <button className="user-button" onClick={logOut} id="user-logout-button">
-                Log Out
+              <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} viewBox="0 0 24 24" height="1em" width="1em">
+                <path stroke="none" d="M0 0h24v24H0z" />
+                <path d="M13 12v.01M3 21h18M5 21V5a2 2 0 012-2h7.5M17 13.5V21M14 7h7m-3-3l3 3-3 3" />
+              </svg>
               </button>
             </div>
           </div>
@@ -208,6 +211,7 @@ const makeLogin = (event) => {
     .catch(error => console.log('error', error));
   
 }
+
 
 // This function get all the employees and shows them in the page
 function GetEmployees(){
