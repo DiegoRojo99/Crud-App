@@ -15,7 +15,7 @@ function App() {
           </div>
           <div id="user-header">
             <div id="user-name">
-              <p id="username-p">Username</p>
+              <p id="username-p"></p>
             </div>
             <div id="user-buttons">
               <button className="user-button" onClick={showLogin} id="user-login-button">
@@ -27,40 +27,41 @@ function App() {
             </div>
           </div>
       </div>
-        <div id="header-pages">
-          <div id="page-selector">
-            <p onClick={previousPage} className='page-item' id="left-selector">&lt;</p>
-            <div className='page-item' id="page-id-div">
-              <p>Page &nbsp;</p>
-              <p id="actual-page">{actualPage}</p>
-              <p>&nbsp; of &nbsp;</p>
-              <p id="total-page">{totalPages}</p>
+      <div className="App-body">
+        <div id="table-div">
+          <table id="employeesTable">
+            <thead>
+              <tr>
+                <th>Employee ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Date of Birth</th>
+                <th>Email</th>
+                <th>Skill Level</th>
+                <th>Active</th>
+                <th>Age</th>
+                <th colSpan="2">
+                  <button onClick={showNewEmployee} id="table-new-employee">
+                    New Employee
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">  
+            </tbody>
+          </table>
+          <div id="paginator">
+            <div className='paginator-arrow' id="left-paginator-div" onClick={previousPage}>
+              <p id="left-paginator-p">&lt;</p>
             </div>
-            <p onClick={nextPage} className='page-item' id="right-selector">&gt;</p>
+            <div id="paginator-middle">
+              
+            </div>
+            <div className='paginator-arrow' id="left-paginator-div" onClick={nextPage}>
+              <p id="left-paginator-p">&gt;</p>
+            </div>
           </div>
         </div>
-      <div className="App-body">
-        <table id="employeesTable">
-          <thead>
-            <tr>
-              <th>Employee ID</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Date of Birth</th>
-              <th>Email</th>
-              <th>Skill Level</th>
-              <th>Active</th>
-              <th>Age</th>
-              <th colSpan="2">
-                <button onClick={showNewEmployee} id="table-new-employee">
-                  New Employee
-                </button>
-              </th>
-            </tr>
-          </thead>
-          <tbody id="tableBody">  
-          </tbody>
-        </table>
         <form id="employeesForm" onSubmit={createEmployee}>
           <h3>New Employee</h3>
           <label htmlFor="first_name">First Name:</label>
@@ -121,20 +122,20 @@ function App() {
 function previousPage(){
   if(actualPage>1){
     actualPage--;
-    document.getElementById("actual-page").innerHTML=actualPage;
     GetEmployees();
   }
 }
 function nextPage(){
   if(actualPage<totalPages){
     actualPage++;
-    document.getElementById("actual-page").innerHTML=actualPage;
     GetEmployees();
+  }else{
   }
 }
 
+
 function listing(){
-  let employeesTable = document.getElementById("employeesTable");
+  let employeesTable = document.getElementById("table-div");
   let employeesForm = document.getElementById("employeesForm");
   let employeesUpdate = document.getElementById("employeesUpdateDiv");
   let loginDiv = document.getElementById("loginDiv");
@@ -202,7 +203,6 @@ const makeLogin = (event) => {
   fetch("http://localhost:8000/api/Authenticate", requestOptions)
     .then(response => response.text())
     .then(result => {
-      document.getElementById("username-p").innerHTML=authData.username;
       document.cookie = `token=${result}`;
     })
     .catch(error => console.log('error', error));
@@ -315,10 +315,12 @@ function GetEmployees(){
         numberEmployee++;
           return 0;
       })
-      totalPages=Math.floor(numberEmployee/5)+1;
-      document.getElementById("total-page").innerHTML=totalPages;
+      if(numberEmployee%5===0){
+        totalPages=Math.floor(numberEmployee/5);
+      }else{
+        totalPages=Math.floor(numberEmployee/5)+1;
+      }
   });
-
 
 }
 
@@ -486,7 +488,7 @@ function showEditing(evt){
   
  let employeeData=(evt.currentTarget.employee);
 
-  let employeesTable = document.getElementById("employeesTable");
+  let employeesTable = document.getElementById("table-div");
   let employeesForm = document.getElementById("employeesForm");
   let employeesUpdate = document.getElementById("employeesUpdateDiv");
 
@@ -529,7 +531,7 @@ function showEditing(evt){
 
 function showNewEmployee(){
   
-  let employeesTable = document.getElementById("employeesTable");
+  let employeesTable = document.getElementById("table-div");
   let employeesForm = document.getElementById("employeesForm");
   let employeesUpdate = document.getElementById("employeesUpdateDiv");
   let loginDiv = document.getElementById("loginDiv");
@@ -544,7 +546,7 @@ function showNewEmployee(){
 
 function showLogin(){
   
-  let employeesTable = document.getElementById("employeesTable");
+  let employeesTable = document.getElementById("table-div");
   let employeesForm = document.getElementById("employeesForm");
   let employeesUpdate = document.getElementById("employeesUpdateDiv");
   let loginDiv = document.getElementById("loginDiv");

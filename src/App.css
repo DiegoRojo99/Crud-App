@@ -43,40 +43,8 @@
 #table-new-employee{
   width: 100%;
 }
-#header-pages{
-  width: 100%;
-  height: 160px;
-  background-color: #01255e;
-  padding-top: 0px;
-}
-#header-pages p{
-  margin: 0;
-  color: white;
-  font-size: 48px;
-}
-#page-selector{
-  width: 50%;
-  height: 100%;
-  float: right;
-}
-#page-id-div p{
-  font-size: 48px;
-  display: inline;
-  margin: 0;
-}
-.page-item{
-  height: 100%;
-  display: inline-block;
-}
-#right-selector, #left-selector{
-   font-size: 120px !important;
-}
-#right-selector:hover, #left-selector:hover{
+.paginator-arrow:hover{
     cursor: pointer;
-}
-#page-id-div{
-  width: 40%;
-  height: 100%;
 }
 
 
@@ -213,4 +181,27 @@ li{
   width: 15%;
   display: block;
   margin: 16px auto;
+}
+#paginator{
+  background-color: #01255e;
+  width: 100%;
+  height: 64px;
+  color: white;
+}
+.paginator-arrow{
+  width: 20%;
+  height: 60px;
+  border: 2px solid white;
+  float: left;
+}
+.paginator-arrow p{
+  margin: 0;
+  height: 98%;
+  font-size: 40px;
+}
+#paginator-middle{
+  width: 59.3%;
+  height: 156px;
+  border: white solid 2px;
+  float: left;
 }
