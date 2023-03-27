@@ -46,6 +46,19 @@ cursor: pointer;
   width: 5rem;
   margin: 6%;
 }
+.table-button{
+  width: 4rem !important;
+  height: 4rem !important;
+}
+.active-no{
+  color: red;
+}
+.active-yes{
+  color: green;
+}
+.active-table{
+  font-size: 3rem;
+}
 #table-new-employee{
   width: 5rem;
   height: 40%;

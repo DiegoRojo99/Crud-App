@@ -178,6 +178,7 @@ function checksLogin(){
   if(cookieActive!==""){
     GetEmployees();
   }else{
+  window.alert("NO COOKIE");
   }
 }
 
@@ -203,18 +204,13 @@ function register(){
     if(response.status===409){
       window.alert("Username is already in use");
     }else if(response.status===200){
-      loadAndLogin();
+      window.location.href="http://localhost:3000/";
     }
   })
   .catch(error => {
     console.log('error', error);
     window.alert("Could not connect with database");
   }); 
-}
-
-function loadAndLogin(){
-  window.location.href="http://localhost:3000/";
-  showLogin();
 }
 
 const makeLogin = (event) => {
@@ -236,7 +232,12 @@ const makeLogin = (event) => {
   fetch("http://localhost:8000/api/Authenticate", requestOptions)
     .then(response => response.text())
     .then(result => {
-      document.cookie = `token=${result}`;
+      if(result!=="Unauthorized"){
+        document.cookie = `token=${result}`;
+        window.location.href="http://localhost:3000/";
+      }else{
+        window.alert("Credentials were incorrect");
+      }
     })
     .catch(error => console.log('error', error));
   
@@ -307,11 +308,14 @@ function GetEmployees(){
           })
         });
   
-  
           if(`${employee.active}`.toString()==='0'){
-            active.innerHTML = 'NO';
+            let crossSVG='<svg viewBox="0 0 16 16"fill="currentColor"height="1em"width="1em"><path fill="currentColor"d="M15.854 12.854L11 8l4.854-4.854a.503.503 0 000-.707L13.561.146a.499.499 0 00-.707 0L8 5 3.146.146a.5.5 0 00-.707 0L.146 2.439a.499.499 0 000 .707L5 8 .146 12.854a.5.5 0 000 .707l2.293 2.293a.499.499 0 00.707 0L8 11l4.854 4.854a.5.5 0 00.707 0l2.293-2.293a.499.499 0 000-.707z"/></svg>';
+            active.innerHTML = crossSVG;
+            active.className="active-no active-table";
           }else{
-            active.innerHTML = 'YES';
+            let tickSVG='<svg baseProfile="tiny" viewBox="0 0 24 24" fill="currentColor" height="1.75em" width="1.75em" > <path d="M16.972 6.251a1.999 1.999 0 00-2.72.777l-3.713 6.682-2.125-2.125a2 2 0 10-2.828 2.828l4 4c.378.379.888.587 1.414.587l.277-.02a2 2 0 001.471-1.009l5-9a2 2 0 00-.776-2.72z" /></svg>';
+            active.innerHTML = tickSVG;
+            active.className="active-yes active-table";
           }
           age.innerHTML = `${employee.age}`;
   
@@ -325,17 +329,21 @@ function GetEmployees(){
           tr.appendChild(skillLevel);
           tr.appendChild(active);
           tr.appendChild(age);
-  
+
+          let pencilSVG='<svg viewBox="0 0 24 24" fill="currentColor" height="1.5em" width="1.5em"><path d="M8.707 19.707L18 10.414 13.586 6l-9.293 9.293a1.003 1.003 0 00-.263.464L3 21l5.242-1.03c.176-.044.337-.135.465-.263zM21 7.414a2 2 0 000-2.828L19.414 3a2 2 0 00-2.828 0L15 4.586 19.414 9 21 7.414z" /></svg>';
+          let deleteSVG='<svg viewBox="0 0 1024 1024" fill="currentColor" height="1.5em" width="1.5em" > <path d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-200 0H360v-72h304v72z" /></svg>';
           let updateButton = document.createElement('button');
+          updateButton.className="table-button";
+          updateButton.innerHTML=pencilSVG;
           updateButton.id="updateButton";
-          updateButton.innerHTML="UPDATE";
           updateButton.employee = employee;
           updateButton.value= `${employee.id}`;
           updateButton.addEventListener('click',showEditing, false);
           let deleteButton = document.createElement('button');
           deleteButton.id="deleteButton";
-          deleteButton.innerHTML="DELETE";
+          deleteButton.innerHTML=deleteSVG;
           deleteButton.value= `${employee.id}`;
+          deleteButton.className="table-button";
           deleteButton.addEventListener('click',deleteEmployee, false);
           updateTD.appendChild(updateButton);
           deleteTD.appendChild(deleteButton);
