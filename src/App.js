@@ -178,7 +178,6 @@ function checksLogin(){
   if(cookieActive!==""){
     GetEmployees();
   }else{
-  window.alert("NO COOKIE");
   }
 }
 
@@ -471,7 +470,12 @@ const createEmployee = (event) => {
   }
   
   fetch(url, fetchData)
-    .then(function() {
+    .then(results => {
+      if(results.status===201){
+        console.log("Employee created");
+      }else{
+        window.alert("Employee could not be created");
+      }
     });
 
 }
@@ -513,7 +517,12 @@ const updateEmployee = (event) => {
   }
   
   fetch(url, fetchData)
-    .then(function() {
+    .then(results => {
+      if(results.status===200){
+        console.log("Employee updated");
+      }else{
+        window.alert("Employee could not be updated")
+      }
     })
 
 }
@@ -527,7 +536,15 @@ function deleteEmployee(){
       'authorization' : document.cookie &&  document.cookie.split('=')[1]
     })
   }
-  fetch('http://localhost:8000/api/Employees/'+id, fetchData).then();
+  fetch('http://localhost:8000/api/Employees/'+id, fetchData).then(
+      results => {
+        if(results.status===200){
+          console.log("Employee deleted");
+        }else{
+          window.alert("Employee could not be deleted")
+        }
+      }
+  );
   window.location.reload();
 }
 
