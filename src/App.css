@@ -42,10 +42,9 @@ cursor: pointer;
   color: white;
 }
 .user-button{
-  margin: 0;
   height: 5rem;
   width: 5rem;
-  margin: 5%;
+  margin: 6%;
 }
 #table-new-employee{
   width: 5rem;
@@ -211,6 +210,9 @@ li{
   margin: 0;
   height: 98%;
   font-size: 40px;
+}
+.paginator-arrow p svg{
+  margin-top: 8px;
 }
 #paginator-middle{
   width: 39%;

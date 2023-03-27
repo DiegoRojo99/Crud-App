@@ -46,13 +46,27 @@ app.use(express.json());
       password:encryptedPassword
     }   
 
-    connection.query("INSERT INTO users SET?;",user, 
-    (err, results, fields) => {
-      if(err) {
-        throw err;
+    checkUsername(user.username, res, user);
+
+  }
+
+  function checkUsername(usernameToFind, res, user){
+    //Check if username is used already in the database
+    connection.query("SELECT * FROM users WHERE username=?;",usernameToFind, (err, results) => {
+      if(err) throw err;
+      if(results.length===0){
+        connection.query("INSERT INTO users SET?;",user, 
+        (err, results, fields) => {
+          if(err) {
+            throw err;
+          }else{
+            res.send(results);
+          }
+        });
       }else{
-        res.send(results);
-      }
+        //Username is already in database
+        res.sendStatus(409);
+      };
     });
   }
 
@@ -82,8 +96,8 @@ app.use(express.json());
           const comparison = await bcrypt.compare(p,password);
           if(comparison){
             const token = generateAccessToken({username:u});
-            res.status=200;
-            res.send(token);
+            
+            res.status(200).send(token);
             found=true;
           }else{
             if(index+1===passwords.length && !found){
