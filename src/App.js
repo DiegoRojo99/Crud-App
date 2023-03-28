@@ -581,10 +581,12 @@ function showEditing(evt){
   let employeesTable = document.getElementById("table-div");
   let employeesForm = document.getElementById("employeesForm");
   let employeesUpdate = document.getElementById("employeesUpdateDiv");
+  let registerDiv = document.getElementById('registerDiv');
 
   employeesTable.style.display="none";
   employeesForm.style.display="none";
   employeesUpdate.style.display="block";
+  registerDiv.style.display="none";
   
   document.getElementsByName('first-name-edit')[0].value=employeeData.first_name;
   document.getElementsByName('last-name-edit')[0].value=employeeData.last_name;
@@ -625,11 +627,13 @@ function showNewEmployee(){
   let employeesForm = document.getElementById("employeesForm");
   let employeesUpdate = document.getElementById("employeesUpdateDiv");
   let loginDiv = document.getElementById("loginDiv");
+  let registerDiv = document.getElementById('registerDiv');
   
   employeesTable.style.display="none";
   employeesForm.style.display="block";
   employeesUpdate.style.display="none";
   loginDiv.style.display="none";
+  registerDiv.style.display="none";
   
   GetSkills();
 }
@@ -640,7 +644,9 @@ function showLogin(){
   let employeesForm = document.getElementById("employeesForm");
   let employeesUpdate = document.getElementById("employeesUpdateDiv");
   let loginDiv = document.getElementById("loginDiv");
+  let registerDiv = document.getElementById('registerDiv');
   
+  registerDiv.style.display="none";
   employeesTable.style.display="none";
   employeesForm.style.display="none";
   employeesUpdate.style.display="none";
