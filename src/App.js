@@ -152,13 +152,16 @@ function App() {
     </div>
   );
 }
-
+//This method shows the regsiter form and hides the login one
+//This is called in the login form in the paragraph
 function showRegister(){
   let registerDiv = document.getElementById('registerDiv');
   let loginDiv = document.getElementById('loginDiv');
   registerDiv.style.display='block';
   loginDiv.style.display='none';
 }
+//This function hides the register idv and shows the login one
+//Called in the register form
 function hideRegister(){
   let registerDiv = document.getElementById('registerDiv');
   let loginDiv = document.getElementById('loginDiv');
@@ -166,6 +169,8 @@ function hideRegister(){
   loginDiv.style.display='block';
 }
 
+//These two methods are used to load different employee records in the listing table
+//They show the previous and next page in case there is one
 function previousPage(){
   if(actualPage>1){
     actualPage--;
@@ -180,26 +185,25 @@ function nextPage(){
   }
 }
 
-
+//This function reloads the page
 function listing(){
   window.location.reload();
 }
-
+//This method is called to logout the session
+//It shows a confirm dialog and if confirmed,
+//it changes the expiry date of the token cookie to the current date so that it expires
 function logOut(){
   if(window.confirm("Do you want to log out?")){
     var date = new Date();
     date.setTime(date.getTime());
     document.cookie="token=''; expires="+date.toGMTString();
     window.location.reload();
-  }else{
-
   }
 }
 
-
+//This method checks if there is a JWT token in the cookie and if there is, it calls the method to populate the table
 function checksLogin(){
   let cookieActive = document.cookie&& document.cookie.split('=')[1];
-  
   if(cookieActive!==""){
     GetEmployees();
   }else{
@@ -207,6 +211,7 @@ function checksLogin(){
   }
 }
 
+//This method takes the values in the register form and sends them in the API call to register the user
 function register(){
   let authData={username:"",password:""};
   authData.username=document.getElementById("register-username").value;
@@ -224,6 +229,7 @@ function register(){
     redirect: 'follow'
   };
 
+  //The fetch calls the API route, with the values of the new user in the body
   fetch("http://localhost:8000/api/Authenticate", requestOptions)
   .then(response => {
     if(response.status===409){
@@ -237,7 +243,7 @@ function register(){
     window.alert("Could not connect with database");
   }); 
 }
-
+//This method makes the login attemp with the values in the login form
 const makeLogin = (event) => {
   let authData={username:"",password:""};
   authData.username=event.target[0].value;
@@ -253,7 +259,7 @@ const makeLogin = (event) => {
     body: raw,
     redirect: 'follow'
   };
-  
+  //The fetch method calls the API route to authenticate the user via JWT token
   fetch("http://localhost:8000/api/Authenticate", requestOptions)
     .then(response => response.text())
     .then(result => {
@@ -293,8 +299,11 @@ function GetEmployees(){
 
       let numberEmployee=0;
       let numberEmployeesInPage=0;
+      //The map makes the action inside for every employee found in the fetch call
       employees.map(function(employee) {
         
+        //This if statement controls the pages, so that no more than five employee records appear at once
+        //Also helps ordering those employee records with the actual and total pages variables
         if(numberEmployee+1>((actualPage-1)*5)&&numberEmployee<(actualPage*5)&&numberEmployeesInPage<5){
           let tr = document.createElement('tr');
           let employeeID = document.createElement('td');
@@ -315,9 +324,7 @@ function GetEmployees(){
           dob.innerHTML = d.getDate()+'-'+(d.getMonth()+1)+'-'+d.getFullYear();
           email.innerHTML = `${employee.email}`;
   
-          
-          //HERE GETS SKILL ID AND SHOWS NAME
-  
+          //This fetch call gets the skills for showing them in the dropdown
           fetch("http://localhost:8000/api/Skills")
           .then((response) => response.json())
           .then((data) => {
@@ -333,6 +340,7 @@ function GetEmployees(){
           })
         });
   
+        //The SVG files are the icons and they are saved as strings in their variables
           if(`${employee.active}`.toString()==='0'){
             let crossSVG='<svg viewBox="0 0 16 16"fill="currentColor"height="1em"width="1em"><path fill="currentColor"d="M15.854 12.854L11 8l4.854-4.854a.503.503 0 000-.707L13.561.146a.499.499 0 00-.707 0L8 5 3.146.146a.5.5 0 00-.707 0L.146 2.439a.499.499 0 000 .707L5 8 .146 12.854a.5.5 0 000 .707l2.293 2.293a.499.499 0 00.707 0L8 11l4.854 4.854a.5.5 0 00.707 0l2.293-2.293a.499.499 0 000-.707z"/></svg>';
             active.innerHTML = crossSVG;
@@ -393,6 +401,7 @@ function GetEmployees(){
 
 let skillsDataset={};
 
+//This function get the skills when creating a new employee and shows them as dropdown options
 function GetSkills(){
   
   var x = document.getElementById("skill-select");
@@ -424,7 +433,7 @@ function GetSkills(){
 
 
 }
-
+//This function get the skills when editing an existing employee and shows them as dropdown options
 function GetSkillsEdit(skill_level){
   
   var x = document.getElementById("skill-edit-select");
@@ -459,7 +468,7 @@ function GetSkillsEdit(skill_level){
 
 
 }
-
+//This methods gets the new employee data and send it to the API call
 const createEmployee = (event) => {
 
   const newEmployeeData={
@@ -505,7 +514,7 @@ const createEmployee = (event) => {
     });
 
 }
-
+//This methods gets the updated employee data and send it to the API call
 const updateEmployee = (event) => {
 
   const newEmployeeData={
@@ -552,7 +561,7 @@ const updateEmployee = (event) => {
     })
 
 }
-
+//This methods calls the API route to delete the employee with the id in the URL
 function deleteEmployee(){
   let id=this.value;
   let fetchData = {
@@ -574,6 +583,7 @@ function deleteEmployee(){
   window.location.reload();
 }
 
+//All the three following methods are used to change the display of the different elements
 function showEditing(evt){
   
  let employeeData=(evt.currentTarget.employee);
@@ -620,7 +630,6 @@ function showEditing(evt){
   
   GetSkillsEdit(employeeData.skill_level);
 }
-
 function showNewEmployee(){
   
   let employeesTable = document.getElementById("table-div");
@@ -637,7 +646,6 @@ function showNewEmployee(){
   
   GetSkills();
 }
-
 function showLogin(){
   
   let employeesTable = document.getElementById("table-div");

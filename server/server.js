@@ -7,6 +7,7 @@ const saltRounds = 1;
 const jwt= require('jsonwebtoken');
 require('dotenv').config();
 
+//This sets up the connection with the mySQL database
 var connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
@@ -18,10 +19,12 @@ var connection = mysql.createConnection({
 app.use(cors());
 app.use(express.json());
 
+  //This method generates the JWT token used later for authentication
   function generateAccessToken(username){
     return jwt.sign(username, process.env.TOKEN_SECRET, {expiresIn:'1800s'});
   }
-
+  //This method authenticates the token that is received, and makes sure is valid
+  //It is called in all API routes when a user is trying to interact with the employees table
   function authenticateToken(req, res, next) {
     const token = req.headers['authorization'];
 
@@ -36,7 +39,7 @@ app.use(express.json());
       next()
     })
   }
-  
+  //Gets the user data and sends to checkusername function
   const register = async function(req,res){
 
     const password = req.body.password;    
@@ -49,7 +52,7 @@ app.use(express.json());
     checkUsername(user.username, res, user);
 
   }
-
+  //Checks if the username is used in the database, and if not it registers the user
   function checkUsername(usernameToFind, res, user){
     //Check if username is used already in the database
     connection.query("SELECT * FROM users WHERE username=?;",usernameToFind, (err, results) => {
@@ -69,7 +72,7 @@ app.use(express.json());
       };
     });
   }
-
+  //Checks that the given password matches the encrypted one in the database
   const checkEncryptedPassword = async function(req, res){
     
     let authJson=req.body;
@@ -111,15 +114,17 @@ app.use(express.json());
 
   }
 
+  //API call for the user login
   app.post('/api/Authenticate', (req, res) => {
     checkEncryptedPassword(req,res);
   });
 
-  
+  //API call for the user register
   app.put('/api/Authenticate', (req, res) => {
     register(req,res);  
   });
 
+  //API call for inserting a new employee
   app.post('/api/Employees',authenticateToken, (req, res) => {
     var dataEmployee = req.body;
     connection.query("INSERT INTO employees SET?;",dataEmployee, 
@@ -133,6 +138,7 @@ app.use(express.json());
     });
   });
 
+  //API call for getting the skills
   app.get('/api/Skills', (req, res) => {
     connection.query("SELECT * FROM skills;", (err, results) => {
       if(err) throw err;
@@ -140,6 +146,7 @@ app.use(express.json());
     });
   });
 
+  //API call for getting the employees
   app.get('/api/Employees',authenticateToken, (req, res) => {
     connection.query("SELECT * FROM employees;", (err, results) => {
       if(err) {
@@ -150,6 +157,7 @@ app.use(express.json());
     });
   });
 
+  //API call for deleting an employee
   app.delete('/api/Employees/:id',authenticateToken, function (req, res) {
     var id = req.params.id;
     connection.query("DELETE FROM employees WHERE id=?;", id, (err, results) => {
@@ -161,7 +169,7 @@ app.use(express.json());
       });
   });
 
-
+  //API call for updating an employee
   app.put('/api/Employees/:id',authenticateToken, function (req, res) {
     
     var dataEmployee = req.body;
@@ -178,6 +186,7 @@ app.use(express.json());
       });
   });
 
+  //Server listening
   app.listen(8000, () => {
     console.log(`Server is running on port 8000.`);
   });
