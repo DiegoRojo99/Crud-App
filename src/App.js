@@ -129,16 +129,41 @@ function App() {
           <h2>LOGIN PAGE</h2>
           <form onSubmit={makeLogin} id="login-form">
               <label htmlFor="login-username">Username:</label>
-              <input id="register-username" name="login-username" type="text"></input><br/>
+              <input name="login-username" type="text"></input><br/>
               <label htmlFor="login-password">Password:</label>
-              <input id="register-password" name="login-password" type='password'></input><br/>
+              <input name="login-password" type='password'></input><br/>
               <button className='two-buttons' type='submit'>Login</button>
-              <button onClick={register} className='two-buttons'>Register</button>
+              <p onClick={showRegister} className='changeLoginRegister'>Already have an account?</p>
+            </form>
+        </div>
+        
+        <div id="registerDiv">
+          <h2>REGISTER PAGE</h2>
+          <form onSubmit={register} id="register-form">
+              <label htmlFor="register-username">Username:</label>
+              <input id="register-username" name="register-username" type="text"></input><br/>
+              <label htmlFor="register-password">Password:</label>
+              <input id="register-password" name="register-password" type='password'></input><br/>
+              <button className='two-buttons' type='submit'>Register</button>
+              <p onClick={hideRegister} className='changeLoginRegister'>Already have an account?</p>
             </form>
         </div>
       </div>
     </div>
   );
+}
+
+function showRegister(){
+  let registerDiv = document.getElementById('registerDiv');
+  let loginDiv = document.getElementById('loginDiv');
+  registerDiv.style.display='block';
+  loginDiv.style.display='none';
+}
+function hideRegister(){
+  let registerDiv = document.getElementById('registerDiv');
+  let loginDiv = document.getElementById('loginDiv');
+  registerDiv.style.display='none';
+  loginDiv.style.display='block';
 }
 
 function previousPage(){
@@ -178,6 +203,7 @@ function checksLogin(){
   if(cookieActive!==""){
     GetEmployees();
   }else{
+    console.log("Not Cookie");
   }
 }
 

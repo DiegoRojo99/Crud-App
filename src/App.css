@@ -152,21 +152,29 @@ button{
   display: block;
   margin-top: 32px;
 }
-#loginDiv{
+#loginDiv, #registerDiv{
   border: 5px solid black;
   display: none;
   width: 40%;
   height: 100%;
   margin: 32px;
 }
-#loginDiv button{
+#loginDiv button, #registerDiv button{
   width: 40%;
   display: inline-block;
   margin: 2.5%;
 }
-#login-form input{
+#login-form input, #register-form input{
   margin-bottom: 16px;
   height: 32px;
+}
+.changeLoginRegister{
+  margin-top: 0;
+}
+.changeLoginRegister:hover{
+  color:#01255e;
+  cursor: pointer;
+  text-decoration: underline;
 }
 #LogOutButton{
   background-color: red;
