@@ -206,8 +206,6 @@ function checksLogin(){
   let cookieActive = document.cookie&& document.cookie.split('=')[1];
   if(cookieActive!==""){
     GetEmployees();
-  }else{
-    console.log("Not Cookie");
   }
 }
 
@@ -245,33 +243,22 @@ function register(){
 }
 //This method makes the login attemp with the values in the login form
 const makeLogin = (event) => {
-  let authData={username:"",password:""};
-  authData.username=event.target[0].value;
-  authData.password=event.target[1].value;
-  var myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  
-  var raw = JSON.stringify(authData);
+  let authData={username:event.target[0].value,password:event.target[1].value};
   
   var requestOptions = {
     method: 'POST',
-    headers: myHeaders,
-    body: raw,
-    redirect: 'follow'
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify(authData)
   };
   //The fetch method calls the API route to authenticate the user via JWT token
-  fetch("http://localhost:8000/api/Authenticate", requestOptions)
-    .then(response => response.text())
-    .then(result => {
-      if(result!=="Unauthorized"){
-        document.cookie = `token=${result}`;
-        window.location.href="http://localhost:3000/";
-      }else{
-        window.alert("Credentials were incorrect");
-      }
-    })
-    .catch(error => console.log('error', error));
-  
+  fetchLogin(requestOptions);  
+}
+
+async function fetchLogin(requestOptions){
+  const response = await fetch("http://localhost:8000/api/Authenticate", requestOptions);
+  const token = await response.text();
+  document.cookie = `token=${token}`
+  return token;
 }
 
 

@@ -27,16 +27,18 @@ app.use(express.json());
   //It is called in all API routes when a user is trying to interact with the employees table
   function authenticateToken(req, res, next) {
     const token = req.headers['authorization'];
-
-    if (token == null) return res.sendStatus(401)
+    if (token == null) {
+      return res.sendStatus(401);
+    }
 
     jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+      if (err){
+        return res.sendStatus(401);
+      } else{
+        req.user = user;
+        next();
+      }
 
-      if (err) return res.sendStatus(401)
-
-      req.user = user
-
-      next()
     })
   }
   //Gets the user data and sends to checkusername function
@@ -99,7 +101,6 @@ app.use(express.json());
           const comparison = await bcrypt.compare(p,password);
           if(comparison){
             const token = generateAccessToken({username:u});
-            
             res.status(200).send(token);
             found=true;
           }else{
