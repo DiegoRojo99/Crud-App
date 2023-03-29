@@ -43,7 +43,6 @@ function App() {
           <table id="employeesTable">
             <thead>
               <tr>
-                <th>Employee ID</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Date of Birth</th>
@@ -251,13 +250,14 @@ const makeLogin = (event) => {
     body: JSON.stringify(authData)
   };
   //The fetch method calls the API route to authenticate the user via JWT token
-  fetchLogin(requestOptions);  
+  fetchLogin(requestOptions);
 }
 
 async function fetchLogin(requestOptions){
   const response = await fetch("http://localhost:8000/api/Authenticate", requestOptions);
   const token = await response.text();
-  document.cookie = `token=${token}`
+  document.cookie = `token=${token}`;
+  window.location.href="http://localhost:3000";
   return token;
 }
 
@@ -293,7 +293,6 @@ function GetEmployees(){
         //Also helps ordering those employee records with the actual and total pages variables
         if(numberEmployee+1>((actualPage-1)*5)&&numberEmployee<(actualPage*5)&&numberEmployeesInPage<5){
           let tr = document.createElement('tr');
-          let employeeID = document.createElement('td');
           let firstName = document.createElement('td');
           let lastName = document.createElement('td');
           let dob = document.createElement('td');
@@ -304,7 +303,6 @@ function GetEmployees(){
           let updateTD = document.createElement('td');
           let deleteTD = document.createElement('td');
   
-          employeeID.innerHTML = `${employee.id}`;
           firstName.innerHTML = `${employee.first_name}`;
           lastName.innerHTML = `${employee.last_name}`;
           var d = new Date(`${employee.dob}`);
@@ -341,7 +339,6 @@ function GetEmployees(){
   
           age.innerHTML = `${employee.age}`;
   
-          tr.appendChild(employeeID);
           tr.appendChild(firstName);
           tr.appendChild(lastName);
           tr.appendChild(dob);

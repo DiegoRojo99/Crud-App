@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 1;
 const jwt= require('jsonwebtoken');
 require('dotenv').config();
+const { v4: uuidv4 } = require('uuid');
 
 //This sets up the connection with the mySQL database
 var connection = mysql.createConnection({
@@ -128,6 +129,7 @@ app.use(express.json());
   //API call for inserting a new employee
   app.post('/api/Employees',authenticateToken, (req, res) => {
     var dataEmployee = req.body;
+    dataEmployee.id=uuidv4();
     connection.query("INSERT INTO employees SET?;",dataEmployee, 
     (err, results, fields) => {
       if(err) {
