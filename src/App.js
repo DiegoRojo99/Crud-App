@@ -316,8 +316,7 @@ function GetEmployees(){
       
           let skills = data;
           skills.map(function(skill) {
-            
-            let skillId=`${skill.skill_id}`;
+            let skillId=`${skill.id}`;
             if(skillId===`${employee.skill_level}`){
               skillLevel.innerHTML = `${skill.name}`;
             }
@@ -399,13 +398,13 @@ function GetSkills(){
     skillsDataset=[];
     skills.map(function(skill) {
       
-      let skillId=`${skill.skill_id}`;
+      let skillId=`${skill.id}`;
     
       if(!skillsDataset.hasOwnProperty(skillId)){
         skillsDataset[skillId]=`${skill.name}`;
         var option = document.createElement("option");
         option.text = `${skill.name}`;
-        option.value = `${skill.skill_id}`;
+        option.value = `${skill.id}`;
         x.add(option);
       }
       
@@ -431,13 +430,13 @@ function GetSkillsEdit(skill_level){
     skillsDataset=[];
     skills.map(function(skill) {
       
-      let skillId=parseInt(`${skill.skill_id}`, 10)
+      let skillId=`${skill.id}`;
     
       if(!skillsDataset.hasOwnProperty(skillId)){
         skillsDataset[skillId]=`${skill.name}`;
         var option = document.createElement("option");
         option.text = `${skill.name}`;
-        option.value = `${skill.skill_id}`;
+        option.value = `${skill.id}`;
         if(skill_level===skillId){
           option.selected="selected";
         }

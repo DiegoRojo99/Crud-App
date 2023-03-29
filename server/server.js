@@ -178,8 +178,8 @@ app.use(express.json());
     var dataEmployee = req.body;
     var id = req.params.id;
     var query2 = "first_name"+"='"+dataEmployee.first_name+"', "+"last_name"+"="+" '"+dataEmployee.last_name+"', "+"dob"+"="+" '"+dataEmployee.dob+"', ";
-    var query3 = "email"+"="+" '"+dataEmployee.email+"', "+"skill_level"+"="+dataEmployee.skill_level+", "+"active"+"="+dataEmployee.active+", "+"age"+"="+dataEmployee.age;
-    var query="UPDATE employees SET "+query2+query3+" WHERE id="+id+";";
+    var query3 = "email"+"="+" '"+dataEmployee.email+"', "+"skill_level"+"='"+dataEmployee.skill_level+"', "+"active"+"="+dataEmployee.active+", "+"age"+"="+dataEmployee.age;
+    var query="UPDATE employees SET "+query2+query3+" WHERE id='"+id+"';";
     connection.query(query, (err, results, fields) => {
       if(err) {
         throw err;
