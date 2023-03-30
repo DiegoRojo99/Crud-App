@@ -46,8 +46,10 @@ app.use(express.json());
   const register = async function(req,res){
 
     const password = req.body.password;    
-    const encryptedPassword = await bcrypt.hash(password, saltRounds)
+    const encryptedPassword = await bcrypt.hash(password, saltRounds);
+    const newId=uuidv4();
     let user={       
+      id:newId,
       username:req.body.username, 
       password:encryptedPassword
     }   

@@ -132,7 +132,7 @@ function App() {
               <label htmlFor="login-password">Password:</label>
               <input name="login-password" type='password'></input><br/>
               <button className='two-buttons' type='submit'>Login</button>
-              <p onClick={showRegister} className='changeLoginRegister'>Already have an account?</p>
+              <p onClick={showRegister} className='changeLoginRegister'>Don't have an account?</p>
             </form>
         </div>
         
