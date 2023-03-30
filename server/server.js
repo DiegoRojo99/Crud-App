@@ -135,8 +135,8 @@ app.use(express.json());
       if(err) {
         throw err;
       }else{
-        res.body=results.insertId;
-        res.status(201).send(results);
+        res.insertId=dataEmployee.id;
+        res.status(201).send(dataEmployee.id);
       }
     });
   });
