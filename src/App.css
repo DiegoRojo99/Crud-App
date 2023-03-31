@@ -99,6 +99,10 @@ table, th, td {
 th, td{
   padding: 8px;
 }
+th{
+  background-color: #01255e;
+  color: white;
+}
 
 #employeesForm{
   display: none;
