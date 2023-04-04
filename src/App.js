@@ -3,42 +3,41 @@ import {React} from "react";
 
 let actualPage=1, totalPages=1;
 
-function App() {
- 
-  GetEmployees();
-
-  return (
-    <div className="App">
-      <div className="App-header">
-          <div id="app-name">
-            <h2 id="home" onClick={listing}> 
-            <svg viewBox="0 0 512 512" fill="currentColor" height="1em" width="1em"  >
-              <path d="M261.56 101.28a8 8 0 00-11.06 0L66.4 277.15a8 8 0 00-2.47 5.79L63.9 448a32 32 0 0032 32H192a16 16 0 0016-16V328a8 8 0 018-8h80a8 8 0 018 8v136a16 16 0 0016 16h96.06a32 32 0 0032-32V282.94a8 8 0 00-2.47-5.79z" />
-              <path d="M490.91 244.15l-74.8-71.56V64a16 16 0 00-16-16h-48a16 16 0 00-16 16v32l-57.92-55.38C272.77 35.14 264.71 32 256 32c-8.68 0-16.72 3.14-22.14 8.63l-212.7 203.5c-6.22 6-7 15.87-1.34 22.37A16 16 0 0043 267.56L250.5 69.28a8 8 0 0111.06 0l207.52 198.28a16 16 0 0022.59-.44c6.14-6.36 5.63-16.86-.76-22.97z" />
-            </svg>
-           </h2>
-           <h2 id="h2-name">
-            CRUD APP
-           </h2>
-          </div>
-          <div id="user-header">
-            <div id="user-buttons">
-              <button className="user-button" onClick={showLogin} id="user-login-button">
-              <svg fill="currentColor" viewBox="0 0 16 16" height="2em" width="2em">
-                <path d="M11 6a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path fillRule="evenodd"  d="M0 8a8 8 0 1116 0A8 8 0 010 8zm8-7a7 7 0 00-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 008 1z"/>
-              </svg>
-              </button>
-              <button className="user-button" onClick={logOut} id="user-logout-button">
-              <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} viewBox="0 0 24 24" height="2em" width="2em">
-                <path stroke="none" d="M0 0h24v24H0z" />
-                <path d="M13 12v.01M3 21h18M5 21V5a2 2 0 012-2h7.5M17 13.5V21M14 7h7m-3-3l3 3-3 3" />
-              </svg>
-              </button>
-            </div>
-          </div>
+function AppHeader(){
+  return(
+    <div className="App-header">
+    <div id="app-name">
+      <h2 id="home" onClick={listing}> 
+      <svg viewBox="0 0 512 512" fill="currentColor" height="1em" width="1em"  >
+        <path d="M261.56 101.28a8 8 0 00-11.06 0L66.4 277.15a8 8 0 00-2.47 5.79L63.9 448a32 32 0 0032 32H192a16 16 0 0016-16V328a8 8 0 018-8h80a8 8 0 018 8v136a16 16 0 0016 16h96.06a32 32 0 0032-32V282.94a8 8 0 00-2.47-5.79z" />
+        <path d="M490.91 244.15l-74.8-71.56V64a16 16 0 00-16-16h-48a16 16 0 00-16 16v32l-57.92-55.38C272.77 35.14 264.71 32 256 32c-8.68 0-16.72 3.14-22.14 8.63l-212.7 203.5c-6.22 6-7 15.87-1.34 22.37A16 16 0 0043 267.56L250.5 69.28a8 8 0 0111.06 0l207.52 198.28a16 16 0 0022.59-.44c6.14-6.36 5.63-16.86-.76-22.97z" />
+      </svg>
+    </h2>
+    <h2 id="h2-name">
+      CRUD APP
+    </h2>
+    </div>
+    <div id="user-header">
+      <div id="user-buttons">
+        <button className="user-button" onClick={showLogin} id="user-login-button">
+        <svg fill="currentColor" viewBox="0 0 16 16" height="2em" width="2em">
+          <path d="M11 6a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path fillRule="evenodd"  d="M0 8a8 8 0 1116 0A8 8 0 010 8zm8-7a7 7 0 00-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 008 1z"/>
+        </svg>
+        </button>
+        <button className="user-button" onClick={logOut} id="user-logout-button">
+        <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} viewBox="0 0 24 24" height="2em" width="2em">
+          <path stroke="none" d="M0 0h24v24H0z" />
+          <path d="M13 12v.01M3 21h18M5 21V5a2 2 0 012-2h7.5M17 13.5V21M14 7h7m-3-3l3 3-3 3" />
+        </svg>
+        </button>
       </div>
-      <div className="App-body">
+    </div>
+</div>
+  );
+}
+function ListingTable(){
+  return(
         <div id="table-div">
           <table id="employeesTable">
             <thead>
@@ -83,6 +82,10 @@ function App() {
             </div>
           </div>
         </div>
+  );
+}
+function EmployeeForm(){
+  return(
         <form id="employeesForm" onSubmit={createEmployee}>
           <h3>New Employee</h3>
           <label htmlFor="first_name">First Name:</label>
@@ -102,51 +105,78 @@ function App() {
           </select><br/>
           <button type='submit' id="new-employee-button">Create new employee</button>
         </form>
-        <div id="employeesUpdateDiv">          
-          <form id="updateEmployeesForm" onSubmit={updateEmployee}>
-            <h3>Update Employee</h3>
-            <label htmlFor="first_name">First Name:</label>
-            <input type="text" name="first-name-edit" id="first_name-edit"/><br/>
-            <label htmlFor="last_name">Last Name:</label>
-            <input type="text"name="last-name-edit" id="last_name-edit" /><br/>
-            <label htmlFor="dob">Last Name:</label>
-            <input type="date" name="dob-edit" id="dob-edit" /><br/>
-            <label htmlFor="email">Email:</label>
-            <input type="email" name="email-edit" id="email-edit" /><br/>
-            <label htmlFor="active">Active:</label>
-            <input type="checkbox" name="active-edit" id="active-edit" /><br/>
-            <label htmlFor="age">Age:</label>
-            <input type="number" name="age-edit" id="age-edit"/><br/>
-            <label htmlFor="skill">Skill:</label>
-            <select id="skill-edit-select" name="skill">
-            </select><br/>
-            <input type="hidden" name="id-edit" id="id"/><br/>
-            <button type='submit' id="update-employee-button">Update employee</button>
-          </form>
-        </div>
-        <div id="loginDiv">
-          <h2>LOGIN PAGE</h2>
-          <form onSubmit={makeLogin} id="login-form">
-              <label htmlFor="login-username">Username:</label>
-              <input name="login-username" type="text"></input><br/>
-              <label htmlFor="login-password">Password:</label>
-              <input name="login-password" type='password'></input><br/>
-              <button className='two-buttons' type='submit'>Login</button>
-              <p onClick={showRegister} className='changeLoginRegister'>Don't have an account?</p>
-            </form>
-        </div>
-        
-        <div id="registerDiv">
-          <h2>REGISTER PAGE</h2>
-          <form onSubmit={register} id="register-form">
-              <label htmlFor="register-username">Username:</label>
-              <input id="register-username" name="register-username" type="text"></input><br/>
-              <label htmlFor="register-password">Password:</label>
-              <input id="register-password" name="register-password" type='password'></input><br/>
-              <button className='two-buttons' type='submit'>Register</button>
-              <p onClick={hideRegister} className='changeLoginRegister'>Already have an account?</p>
-            </form>
-        </div>
+  );
+}
+function UpdateEmployee(){
+  return(
+    <div id="employeesUpdateDiv">          
+      <form id="updateEmployeesForm" onSubmit={updateEmployee}>
+        <h3>Update Employee</h3>
+        <label htmlFor="first_name">First Name:</label>
+        <input type="text" name="first-name-edit" id="first_name-edit"/><br/>
+        <label htmlFor="last_name">Last Name:</label>
+        <input type="text"name="last-name-edit" id="last_name-edit" /><br/>
+        <label htmlFor="dob">Last Name:</label>
+        <input type="date" name="dob-edit" id="dob-edit" /><br/>
+        <label htmlFor="email">Email:</label>
+        <input type="email" name="email-edit" id="email-edit" /><br/>
+        <label htmlFor="active">Active:</label>
+        <input type="checkbox" name="active-edit" id="active-edit" /><br/>
+        <label htmlFor="age">Age:</label>
+        <input type="number" name="age-edit" id="age-edit"/><br/>
+        <label htmlFor="skill">Skill:</label>
+        <select id="skill-edit-select" name="skill">
+        </select><br/>
+        <input type="hidden" name="id-edit" id="id"/><br/>
+        <button type='submit' id="update-employee-button">Update employee</button>
+      </form>
+    </div>
+  );
+}
+function LoginForm(){
+  return (
+    <div id="loginDiv">
+      <h2>LOGIN PAGE</h2>
+      <form onSubmit={makeLogin} id="login-form">
+          <label htmlFor="login-username">Username:</label>
+          <input name="login-username" type="text"></input><br/>
+          <label htmlFor="login-password">Password:</label>
+          <input name="login-password" type='password'></input><br/>
+          <button className='two-buttons' type='submit'>Login</button>
+          <p onClick={showRegister} className='changeLoginRegister'>Don't have an account?</p>
+        </form>
+    </div>
+  );
+}
+function RegisterForm(){
+  return(
+    <div id="registerDiv">
+      <h2>REGISTER PAGE</h2>
+      <form onSubmit={register} id="register-form">
+          <label htmlFor="register-username">Username:</label>
+          <input id="register-username" name="register-username" type="text"></input><br/>
+          <label htmlFor="register-password">Password:</label>
+          <input id="register-password" name="register-password" type='password'></input><br/>
+          <button className='two-buttons' type='submit'>Register</button>
+          <p onClick={hideRegister} className='changeLoginRegister'>Already have an account?</p>
+        </form>
+    </div>
+    );
+}
+
+function App() {
+ 
+  GetEmployees();
+
+  return (
+    <div className="App">
+      <AppHeader />
+      <div className="App-body">
+        <ListingTable />
+        <EmployeeForm />
+        <UpdateEmployee />
+        <LoginForm />
+        <RegisterForm />
       </div>
     </div>
   );
