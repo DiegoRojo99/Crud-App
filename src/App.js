@@ -5,7 +5,7 @@ let actualPage=1, totalPages=1;
 
 function App() {
  
-  checksLogin();
+  GetEmployees();
 
   return (
     <div className="App">
@@ -190,21 +190,18 @@ function listing(){
 }
 //This method is called to logout the session
 //It shows a confirm dialog and if confirmed,
-//it changes the expiry date of the token cookie to the current date so that it expires
+//it eliminates the token in the cache
 function logOut(){
   if(window.confirm("Do you want to log out?")){
-    var date = new Date();
-    date.setTime(date.getTime());
-    document.cookie="token=''; expires="+date.toGMTString();
-    window.location.reload();
+  let fetchData = {
+    method: 'DELETE',
+    headers: new Headers({
+      'Content-Type': 'application/json; charset=UTF-8'
+    })
   }
-}
-
-//This method checks if there is a JWT token in the cookie and if there is, it calls the method to populate the table
-function checksLogin(){
-  let cookieActive = document.cookie&& document.cookie.split('=')[1];
-  if(cookieActive!==""){
-    GetEmployees();
+  fetch('http://localhost:8000/signOut', fetchData)
+  .then(console.log("User is logged out"));
+  window.location.reload();
   }
 }
 
@@ -256,7 +253,6 @@ const makeLogin = (event) => {
 async function fetchLogin(requestOptions){
   const response = await fetch("http://localhost:8000/api/Authenticate", requestOptions);
   const token = await response.text();
-  document.cookie = `token=${token}`;
   window.location.href="http://localhost:3000";
   return token;
 }
@@ -265,14 +261,12 @@ async function fetchLogin(requestOptions){
 // This function get all the employees and shows them in the page
 function GetEmployees(){
 
-  let token =  document.cookie &&  document.cookie.split('=')[1];
   
   let url="http://localhost:8000/api/Employees";
   let fetchData = {
     method: 'GET',
     headers: new Headers({
-      'Content-Type': 'application/json; charset=UTF-8',
-      'authorization' : token
+      'Content-Type': 'application/json; charset=UTF-8'
     })
   }
   fetch(url, fetchData)
@@ -482,8 +476,7 @@ const createEmployee = (event) => {
     method: 'POST',
     body: JSON.stringify(newEmployeeData),
     headers: new Headers({
-      'Content-Type': 'application/json; charset=UTF-8',
-      'authorization': (document.cookie &&  document.cookie.split('=')[1])
+      'Content-Type': 'application/json; charset=UTF-8'
     })
   }
   
@@ -529,8 +522,7 @@ const updateEmployee = (event) => {
     method: 'PUT',
     body: JSON.stringify(newEmployeeData),
     headers: new Headers({
-      'Content-Type': 'application/json; charset=UTF-8',
-      'authorization': (document.cookie &&  document.cookie.split('=')[1])
+      'Content-Type': 'application/json; charset=UTF-8'
     })
   }
   
@@ -550,8 +542,7 @@ function deleteEmployee(){
   let fetchData = {
     method: 'DELETE',
     headers: new Headers({
-      'Content-Type': 'application/json; charset=UTF-8',
-      'authorization' : document.cookie &&  document.cookie.split('=')[1]
+      'Content-Type': 'application/json; charset=UTF-8'
     })
   }
   fetch('http://localhost:8000/api/Employees/'+id, fetchData).then(
