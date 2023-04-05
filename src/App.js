@@ -223,15 +223,8 @@ function listing(){
 //it eliminates the token in the cache
 function logOut(){
   if(window.confirm("Do you want to log out?")){
-  let fetchData = {
-    method: 'DELETE',
-    headers: new Headers({
-      'Content-Type': 'application/json; charset=UTF-8'
-    })
-  }
-  fetch('http://localhost:8000/signOut', fetchData)
-  .then(console.log("User is logged out"));
-  window.location.reload();
+    localStorage.removeItem("token");
+    window.location.reload();
   }
 }
 
@@ -287,6 +280,7 @@ async function fetchLogin(requestOptions){
     window.alert("Credentials are incorrect");
   }
   const token = await response.text();
+  localStorage.setItem("token", token);
   window.location.href="http://localhost:3000";
   return token;
 }
@@ -300,7 +294,8 @@ function GetEmployees(){
   let fetchData = {
     method: 'GET',
     headers: new Headers({
-      'Content-Type': 'application/json; charset=UTF-8'
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization' : localStorage.getItem("token")
     })
   }
   fetch(url, fetchData)
@@ -510,7 +505,8 @@ const createEmployee = (event) => {
     method: 'POST',
     body: JSON.stringify(newEmployeeData),
     headers: new Headers({
-      'Content-Type': 'application/json; charset=UTF-8'
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization' : localStorage.getItem("token")
     })
   }
   
@@ -556,7 +552,8 @@ const updateEmployee = (event) => {
     method: 'PUT',
     body: JSON.stringify(newEmployeeData),
     headers: new Headers({
-      'Content-Type': 'application/json; charset=UTF-8'
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization' : localStorage.getItem("token")
     })
   }
   
@@ -576,7 +573,8 @@ function deleteEmployee(){
   let fetchData = {
     method: 'DELETE',
     headers: new Headers({
-      'Content-Type': 'application/json; charset=UTF-8'
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization' : localStorage.getItem("token")
     })
   }
   fetch('http://localhost:8000/api/Employees/'+id, fetchData).then(

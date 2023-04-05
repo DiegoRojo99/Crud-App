@@ -30,14 +30,7 @@ function generateAccessToken(username){
 //This method authenticates the token that is received, and makes sure is valid
 //It is called in all API routes when a user is trying to interact with the employees table
 function authenticateToken(req, res, next) {
-  let token = '';
-  try {
-    if(cache.has("token")){
-      token=cache.get("token");
-    }
-  } catch (error) {
-    
-  }
+  const token = req.headers['authorization'];
   if (token == null) {
     return res.sendStatus(401);
   }
@@ -114,8 +107,7 @@ const checkEncryptedPassword = async function(req, res){
         const comparison = await bcrypt.compare(p,password);
         if(comparison){
           const token = generateAccessToken({username:u});
-          cache.set("token", token); 
-          res.status(200).send(token);
+          res.send(token);
           found=true;
         }else{
           if(index+1===passwords.length && !found){
@@ -132,10 +124,6 @@ const checkEncryptedPassword = async function(req, res){
 //API call for the user login
 app.post('/api/Authenticate', (req, res) => {
   checkEncryptedPassword(req,res);
-});
-
-app.delete('/signOut', (req, res) => {
-  cache.del( "token" );
 });
 
 //API call for the user register
@@ -160,10 +148,22 @@ app.post('/api/Employees',authenticateToken, (req, res) => {
 
 //API call for getting the skills
 app.get('/api/Skills', (req, res) => {
-  connection.query("SELECT * FROM skills;", (err, results) => {
-    if(err) throw err;
-    res.send(results);
-  });
+  let value = cache.get( "skills" );
+  if ( value == undefined ){
+    console.log("Skills retrieved from database");
+    connection.query("SELECT * FROM skills;", (err, results) => {
+      if(err) {
+        throw err;
+      }else{  
+        cache.set("skills",results);
+        res.send(results);
+      }
+    });
+  }else{
+    console.log("Skills retrieved from cache");
+    let skills=cache.get("skills");
+    res.send(skills);
+  }
 });
 
 //API call for getting the employees
@@ -201,7 +201,7 @@ app.put('/api/Employees/:id',authenticateToken, function (req, res) {
     if(err) {
       throw err;
     }else{
-      res.status(200).send(req.body);
+      res.status(200).send(dataEmployee);
     }
     });
 });
