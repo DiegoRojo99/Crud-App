@@ -282,6 +282,10 @@ const makeLogin = (event) => {
 
 async function fetchLogin(requestOptions){
   const response = await fetch("http://localhost:8000/api/Authenticate", requestOptions);
+  
+  if (!response.ok) {
+    window.alert("Credentials are incorrect");
+  }
   const token = await response.text();
   window.location.href="http://localhost:3000";
   return token;
