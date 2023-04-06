@@ -1,4 +1,7 @@
-const server = require('./server');
+const express = require('express');
+const { async } = require('q');
+const app = express();
+app.use(express.json());
 const request = require('supertest');
 require('dotenv').config();
 let employeesDatabase=[
@@ -83,12 +86,18 @@ let employeesDatabase=[
         "age": 36
     }
 ];
-let authToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJpYXQiOjE2ODA3ODkxMzcsImV4cCI6MTY4MDc5MDkzN30.TbgGKjIujUbT46S5z6gkUwZNe45QEgqJ6_yO0rSM6KI";
-
+let authToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJpYXQiOjE2ODA3OTM1NjgsImV4cCI6MTY4MDc5NTM2OH0.d8jpcU5PeXiJapxstC5zucifeYq9c6SsVxVkgkR5Id4";
 describe('Get employees test suite', () => {
     it('Error if no auth given', async() => {
-        const response = await request(server.app).get("/api/Employees");
-        expect(response.statusCode).toBe(401);
+        let url="http://localhost:8000/api/Employees";
+        let fetchData = {
+            method: 'GET',
+            headers: new Headers({
+            'Content-Type': 'application/json; charset=UTF-8'
+            })
+        }
+        fetch(url, fetchData).then((response) => {
+            expect(response.status).toBe(401)});
     });
     
     it('Return the exact thing is in the database', async() => {
@@ -108,7 +117,6 @@ describe('Get employees test suite', () => {
     });
 
     it('Check if there are employees and they have all attributes', async() => {
-        
         let url="http://localhost:8000/api/Employees";
         let fetchData = {
             method: 'GET',
@@ -134,9 +142,23 @@ describe('Get employees test suite', () => {
                     expect(employee.age).toBeDefined();
                 });
             })
+    });
+});
+
+describe("Auth login", () => {
+    
+    it('Auth works with correct login', async() => {
+    
+        let authData={username:"a",password:"a"};
+        var requestOptions = {
+            method: 'POST',
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify(authData)
+        };
+        
+        fetch("http://localhost:8000/api/Authenticate", requestOptions)
+            .then((response) => response.text())
+            .then((data) => expect(data).toContain("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"));
     
         });
-    // Insert other tests below this line
-
-    // Insert other tests above this line
-});
+})
