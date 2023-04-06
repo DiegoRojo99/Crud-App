@@ -83,21 +83,22 @@ let employeesDatabase=[
         "age": 36
     }
 ];
+let authToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJpYXQiOjE2ODA3ODkxMzcsImV4cCI6MTY4MDc5MDkzN30.TbgGKjIujUbT46S5z6gkUwZNe45QEgqJ6_yO0rSM6KI";
 
-describe('Employees test suite', () => {
-    it('tests get /employees endpoint with no auth', async() => {
+describe('Get employees test suite', () => {
+    it('Error if no auth given', async() => {
         const response = await request(server.app).get("/api/Employees");
         expect(response.statusCode).toBe(401);
     });
     
-    it('tests get /employees endpoint with auth', async() => {
+    it('Return the exact thing is in the database', async() => {
         
     let url="http://localhost:8000/api/Employees";
     let fetchData = {
         method: 'GET',
         headers: new Headers({
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization' : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJpYXQiOjE2ODA3ODkxMzcsImV4cCI6MTY4MDc5MDkzN30.TbgGKjIujUbT46S5z6gkUwZNe45QEgqJ6_yO0rSM6KI"
+        'Authorization' : authToken
         })
     }
     fetch(url, fetchData)
@@ -106,6 +107,35 @@ describe('Employees test suite', () => {
 
     });
 
+    it('Check if there are employees and they have all attributes', async() => {
+        
+        let url="http://localhost:8000/api/Employees";
+        let fetchData = {
+            method: 'GET',
+            headers: new Headers({
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization' : authToken
+            })
+        }
+        fetch(url, fetchData)
+            .then((response) => response.json())
+            .then((data) => {
+                expect(Array.isArray(data)).toBe(true);
+                expect(data.length).toBeGreaterThan(0);
+                
+                data.forEach((employee) => {
+                    expect(employee.id).toBeDefined();
+                    expect(employee.first_name).toBeDefined();
+                    expect(employee.last_name).toBeDefined();
+                    expect(employee.dob).toBeDefined();
+                    expect(employee.email).toBeDefined();
+                    expect(employee.skill_level).toBeDefined();
+                    expect(employee.active).toBeDefined();
+                    expect(employee.age).toBeDefined();
+                });
+            })
+    
+        });
     // Insert other tests below this line
 
     // Insert other tests above this line
