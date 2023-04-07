@@ -32,6 +32,30 @@ describe("Auth login", () => {
                 expect(data).toContain("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9");
             });
     });
+    it('Error with incorrect user', async() => {
+        let authData={username:"aaaaaaaaaaa",password:"a"};
+        var requestOptions = {
+            method: 'POST',
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify(authData)
+        };
+        fetch("http://localhost:8000/api/Authenticate", requestOptions)
+            .then((response) => {
+                expect(response.status).toBe(401);
+            });
+    });
+    it('Error with incorrect password', async() => {
+        let authData={username:"a",password:"aasasasasasas"};
+        var requestOptions = {
+            method: 'POST',
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify(authData)
+        };
+        fetch("http://localhost:8000/api/Authenticate", requestOptions)
+            .then((response) => {
+                expect(response.status).toBe(401);
+            });
+    });
 })
 
 describe('Get employees test suite', () => {
