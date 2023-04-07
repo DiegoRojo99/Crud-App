@@ -7,6 +7,7 @@ require('dotenv').config();
 //Variables needed for tests
 let authToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJpYXQiOjE2ODA4Njc4NjYsImV4cCI6MTY4MDg2OTY2Nn0.8tmdG85ZdQzG84b3I4Jz70qvp766OuHoQbEPPOpYTeg";
 let employeeID="39e7b407-4c7d-4e2b-8f4b-2e40f8b5c37a";
+let deleteEmployeeID="021b7a36-ecbf-46e3-9ee2-76737372660d";
 const newEmployeeData={
   first_name:"Test",
   last_name:"Test",
@@ -146,6 +147,50 @@ describe('Update employee test suite', () => {
     });
 });
 
+describe('Delete employee test suite', () => {
+    it('Error if no auth given', async() => {
+        let url="http://localhost:8000/api/Employees/"+deleteEmployeeID;
+        let fetchData = {
+            method: 'DELETE',
+            body: JSON.stringify(newEmployeeData),
+            headers: new Headers({
+            'Content-Type': 'application/json; charset=UTF-8'
+            })
+        }
+        fetch(url, fetchData).then((response) => {
+            expect(response.status).toBe(401)});
+    });
+
+    it('Error if JWT token is expired', async() => {
+        let url="http://localhost:8000/api/Employees/"+deleteEmployeeID;
+        let fetchData = {
+            method: 'DELETE',
+            body: JSON.stringify(newEmployeeData),
+            headers: new Headers({
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization':"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJpYXQiOjE2ODA3OTM1NjgsImV4cCI6MTY4MDc5NTM2OH0.d8jpcU5PeXiJapxstC5zucifeYq9c6SsVxVkgkR5Id4"
+            })
+        }
+        fetch(url, fetchData).then((response) => {
+            expect(response.status).toBe(401);
+        });
+    });
+
+    it('Delete employee sends ok status code', async() => {
+        let url="http://localhost:8000/api/Employees/"+deleteEmployeeID;
+        let fetchData = {
+            method: 'DELETE',
+            headers: new Headers({
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization' : authToken
+            })
+        }
+        fetch(url, fetchData)
+            .then((response) => {
+                expect(response.status).toBe(200);
+            });
+    });
+});
 
 describe('Create employee test suite', () => {
     it('Error if no auth given', async() => {
