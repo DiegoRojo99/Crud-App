@@ -216,7 +216,7 @@ function nextPage(){
 
 //This function reloads the page
 function listing(){
-  window.location.reload();
+  window.location.href="http://localhost:3000";
 }
 //This method is called to logout the session
 //It shows a confirm dialog and if confirmed,
@@ -514,8 +514,10 @@ const createEmployee = (event) => {
     .then(results => {
       if(results.status===201){
         console.log("Employee created");
+        window.location.href="http://localhost:3000";
       }else{
         window.alert("Employee could not be created");
+        window.location.href="http://localhost:3000";
       }
     });
 
@@ -558,13 +560,17 @@ const updateEmployee = (event) => {
   }
   
   fetch(url, fetchData)
-    .then(results => {
-      if(results.status===200){
+    .then(response => {
+      if(response.status===200){
         console.log("Employee updated");
+        window.location.href="http://localhost:3000";
       }else{
-        window.alert("Employee could not be updated")
+        window.alert("Employee could not be updated");
+        window.location.href="http://localhost:3000";
       }
-    })
+    });
+
+    
 
 }
 //This methods calls the API route to delete the employee with the id in the URL
