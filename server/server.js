@@ -210,7 +210,16 @@ app.get("/api/Skills/:id", (req, res) => {
 
 //API call for getting the skills
 app.get("/api/Skills", (req, res) => {
-    res.send();
+  let skillsToSend=[];
+  let allSkills = redisClient.lRange("skills",0,-1);
+  allSkills.then(function(skillsFounded){
+    for (let index = 0; index < skillsNumber; index++) {
+      const skill = skillsFounded[index];
+      let skillJSON = JSON.parse(skill);
+      skillsToSend.push(skillJSON);
+    }
+    res.send(skillsToSend);
+  })
 });
 
 //API call for getting the employees
