@@ -8,9 +8,6 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const { v4: uuidv4 } = require("uuid");
 
-const NodeCache = require("node-cache");
-const cache = new NodeCache();
-
 let skillsNumber=0;
 const redis = require('redis');
 const redisClient = redis.createClient({
@@ -168,28 +165,29 @@ async function loadSkills() {
       skillsNumber=results.length
     }
   });
-    if(!socketOpened){
-      await redisClient.connect();
-      socketOpened=true;
-    }
-    let value = redisClient.lRange("skills",0,-1);
-    value.then(function(res) {
-      if (res.length !== skillsNumber) {
-        console.log("Skills retrieved from database");
-        connection.query("SELECT * FROM skills;", (err, results) => {
-          if (err) {
-            throw err;
-          } else {
-            for (let index = 0; index < results.length; index++) {
-              const skill = results[index];
-              redisClient.lPush("skills",JSON.stringify(skill));
-            }
+  if(!socketOpened){
+    await redisClient.connect();
+    socketOpened=true;
+  }
+  let value = redisClient.lRange("skills",0,-1);
+  value.then(function(res) {
+    if (res.length !== skillsNumber) {
+      redisClient.del("skills");
+      console.log("Skills retrieved from database");
+      connection.query("SELECT * FROM skills;", (err, results) => {
+        if (err) {
+          throw err;
+        } else {
+          for (let index = 0; index < results.length; index++) {
+            const skill = results[index];
+            redisClient.lPush("skills",JSON.stringify(skill));
           }
-        });
-      }else{
-        console.log("Not matching");
-      }
-    });
+        }
+      });
+    }else{
+      console.log("Not matching");
+    }
+  });
 }
 loadSkills();
 
