@@ -11,6 +11,7 @@ const { v4: uuidv4 } = require("uuid");
 const NodeCache = require("node-cache");
 const cache = new NodeCache();
 
+let skillsNumber=0;
 const redis = require('redis');
 const redisClient = redis.createClient({
   host: 'redis',
@@ -160,7 +161,6 @@ app.post("/api/Employees", authenticateToken, (req, res) => {
 
 let socketOpened=false;
 async function loadSkills() {
-  let skillsNumber=0;
   connection.query("SELECT * FROM skills;", (err, results) => {
     if (err) {
       throw err;
@@ -182,13 +182,12 @@ async function loadSkills() {
           } else {
             for (let index = 0; index < results.length; index++) {
               const skill = results[index];
-              console.log(JSON.stringify(skill));
               redisClient.lPush("skills",JSON.stringify(skill));
             }
           }
         });
       }else{
-        console.log(res);
+        console.log("Not matching");
       }
     });
 }
@@ -196,12 +195,17 @@ loadSkills();
 
 app.get("/api/Skills/:id", (req, res) => {
   var id = req.params.id;
-  let r=redisClient.get(id);
-  r.then(function(skillName){
-    //console.log(skillName);
-    response=skillName;
-    res.send(skillName);
-  });
+  
+  let allSkills = redisClient.lRange("skills",0,-1);
+  allSkills.then(function(skillsFounded){
+    for (let index = 0; index < skillsNumber; index++) {
+      const skill = skillsFounded[index];
+      let skillJSON = JSON.parse(skill);
+      if(skillJSON.id===id){
+        res.send(skillJSON.name);
+      }
+    }
+  })
 });
 
 //API call for getting the skills

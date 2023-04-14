@@ -333,18 +333,10 @@ function GetEmployees(){
           email.innerHTML = `${employee.email}`;
   
           //This fetch call gets the skills for showing them in the dropdown
-          fetch("http://localhost:8000/api/Skills")
-          .then((response) => response.json())
+          fetch("http://localhost:8000/api/Skills/"+employee.skill_level)
+          .then((response) => response.text())
           .then((data) => {
-      
-          let skills = data;
-          skills.map(function(skill) {
-            let skillId=`${skill.id}`;
-            if(skillId===`${employee.skill_level}`){
-              skillLevel.innerHTML = `${skill.name}`;
-            }
-            return 0;
-          })
+              skillLevel.innerHTML = data;
         });
   
         //The SVG files are the icons and they are saved as strings in their variables
