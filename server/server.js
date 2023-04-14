@@ -11,6 +11,12 @@ const { v4: uuidv4 } = require("uuid");
 const NodeCache = require("node-cache");
 const cache = new NodeCache();
 
+const redis = require('redis');
+const redisClient = redis.createClient({
+  host: 'redis',
+  port: 6379
+});
+
 //This sets up the connection with the mySQL database
 var connection = mysql.createConnection({
   host: "localhost",
@@ -152,24 +158,55 @@ app.post("/api/Employees", authenticateToken, (req, res) => {
   );
 });
 
-//API call for getting the skills
-app.get("/api/Skills", (req, res) => {
-  let value = cache.get("skills");
-  if (value == undefined) {
-    console.log("Skills retrieved from database");
-    connection.query("SELECT * FROM skills;", (err, results) => {
-      if (err) {
-        throw err;
-      } else {
-        cache.set("skills", results);
-        res.send(results);
+let socketOpened=false;
+async function loadSkills() {
+  let skillsNumber=0;
+  connection.query("SELECT * FROM skills;", (err, results) => {
+    if (err) {
+      throw err;
+    } else {
+      skillsNumber=results.length
+    }
+  });
+    if(!socketOpened){
+      await redisClient.connect();
+      socketOpened=true;
+    }
+    let value = redisClient.lRange("skills",0,-1);
+    value.then(function(res) {
+      if (res.length !== skillsNumber) {
+        console.log("Skills retrieved from database");
+        connection.query("SELECT * FROM skills;", (err, results) => {
+          if (err) {
+            throw err;
+          } else {
+            for (let index = 0; index < results.length; index++) {
+              const skill = results[index];
+              console.log(JSON.stringify(skill));
+              redisClient.lPush("skills",JSON.stringify(skill));
+            }
+          }
+        });
+      }else{
+        console.log(res);
       }
     });
-  } else {
-    console.log("Skills retrieved from cache");
-    let skills = cache.get("skills");
-    res.send(skills);
-  }
+}
+loadSkills();
+
+app.get("/api/Skills/:id", (req, res) => {
+  var id = req.params.id;
+  let r=redisClient.get(id);
+  r.then(function(skillName){
+    //console.log(skillName);
+    response=skillName;
+    res.send(skillName);
+  });
+});
+
+//API call for getting the skills
+app.get("/api/Skills", (req, res) => {
+    res.send();
 });
 
 //API call for getting the employees

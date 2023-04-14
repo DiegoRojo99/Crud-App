@@ -7,9 +7,9 @@ require("dotenv").config();
 
 //Variables needed for tests
 let authToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJpYXQiOjE2ODEzOTIwNDQsImV4cCI6MTY4MTM5Mzg0NH0.vZUmAMGG7qcuJzZ2uGIJ-B5WqHOysvCP4R4bXHLUeqs";
-let employeeID = "76225827-c5c0-4bcd-9e21-18bfcbb8c0b5";
-let deleteEmployeeID = "76225827-c5c0-4bcd-9e21-18bfcbb8c0b5";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImEiLCJpYXQiOjE2ODE0NzA5NDUsImV4cCI6MTY4MTQ3Mjc0NX0.sAZ86NtBp8nmDRC27PTpXC6ESLDZYUbRmR_sY_5exSo";
+let employeeID = "1fb61b04-0878-458e-8c33-403d6996593e";
+let deleteEmployeeID = "61aedc6b-bca4-4729-9c4c-21337728dc90";
 const newEmployeeData = {
   first_name: "Test",
   last_name: "Test",
